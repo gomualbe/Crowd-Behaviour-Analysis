@@ -1,0 +1,9 @@
+<RCC>
+  <qresource>
+    <file>icons/compress_light_purple.png</file>
+    <file>icons/dashboard_light.png</file>
+    <file>icons/expand_light_purple.png</file>
+    <file>icons/hamburger_light.png</file>
+    <file>icons/settings_light.png</file>
+  </qresource>
+</RCC>
