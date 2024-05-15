@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(983, 500)
+        MainWindow.resize(993, 525)
         MainWindow.setStyleSheet("background-color: rgb(245, 250, 254);")
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -20,119 +20,6 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.main_view = QtWidgets.QWidget(parent=self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.main_view.sizePolicy().hasHeightForWidth())
-        self.main_view.setSizePolicy(sizePolicy)
-        self.main_view.setMinimumSize(QtCore.QSize(600, 400))
-        self.main_view.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.main_view.setStyleSheet("QWidget{\n"
-"    background-color: rgb(49, 49, 49);\n"
-"}")
-        self.main_view.setObjectName("main_view")
-        self.stackedWidget = QtWidgets.QStackedWidget(parent=self.main_view)
-        self.stackedWidget.setGeometry(QtCore.QRect(0, 0, 691, 501))
-        self.stackedWidget.setMinimumSize(QtCore.QSize(600, 400))
-        self.stackedWidget.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.stackedWidget.setObjectName("stackedWidget")
-        self.page = QtWidgets.QWidget()
-        self.page.setObjectName("page")
-        self.stackedWidget.addWidget(self.page)
-        self.page_2 = QtWidgets.QWidget()
-        self.page_2.setObjectName("page_2")
-        self.stackedWidget.addWidget(self.page_2)
-        self.page_3 = QtWidgets.QWidget()
-        self.page_3.setObjectName("page_3")
-        self.stackedWidget.addWidget(self.page_3)
-        self.gridLayout_2.addWidget(self.main_view, 0, 2, 1, 2)
-        self.icon_only_widget = QtWidgets.QWidget(parent=self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.icon_only_widget.sizePolicy().hasHeightForWidth())
-        self.icon_only_widget.setSizePolicy(sizePolicy)
-        self.icon_only_widget.setMinimumSize(QtCore.QSize(0, 500))
-        self.icon_only_widget.setMaximumSize(QtCore.QSize(61, 16777215))
-        self.icon_only_widget.setStyleSheet("QWidget{\n"
-"    background-color: rgb(39, 39, 39);\n"
-"}\n"
-"\n"
-"QLabel{\n"
-"    qproperty-alignment: AlignCenter;\n"
-"    font-weight: bold;\n"
-"    color: rgb(238, 238, 238);\n"
-"}\n"
-"\n"
-"QPushButton{\n"
-"    color: rgb(238, 238, 238);\n"
-"    height: 30px;\n"
-"    border: none;\n"
-"    margin-right: 9px;\n"
-"    margin-left: 9px;\n"
-"    border-top-right-radius: 10px;\n"
-"    border-top-left-radius: 10px;\n"
-"    border-bottom-right-radius: 10px;\n"
-"    border-bottom-left-radius: 10px;\n"
-"}\n"
-"\n"
-"QPushButton:checked{\n"
-"    font-weight: bold;\n"
-"    background-color: rgb(91,91,133)\n"
-"}")
-        self.icon_only_widget.setObjectName("icon_only_widget")
-        self.gridLayout = QtWidgets.QGridLayout(self.icon_only_widget)
-        self.gridLayout.setContentsMargins(0, 12, 0, -1)
-        self.gridLayout.setObjectName("gridLayout")
-        self.settings_2 = QtWidgets.QPushButton(parent=self.icon_only_widget)
-        self.settings_2.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/settings_light.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.settings_2.setIcon(icon)
-        self.settings_2.setIconSize(QtCore.QSize(27, 27))
-        self.settings_2.setCheckable(True)
-        self.settings_2.setAutoExclusive(True)
-        self.settings_2.setObjectName("settings_2")
-        self.gridLayout.addWidget(self.settings_2, 3, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 642, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem, 2, 0, 1, 1)
-        self.expand_sidebar = QtWidgets.QPushButton(parent=self.icon_only_widget)
-        self.expand_sidebar.setEnabled(True)
-        self.expand_sidebar.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/icons/expand_light_purple.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.expand_sidebar.setIcon(icon1)
-        self.expand_sidebar.setIconSize(QtCore.QSize(27, 27))
-        self.expand_sidebar.setCheckable(False)
-        self.expand_sidebar.setObjectName("expand_sidebar")
-        self.gridLayout.addWidget(self.expand_sidebar, 0, 0, 1, 1)
-        self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setContentsMargins(-1, 15, -1, 10)
-        self.verticalLayout.setSpacing(15)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.dashboard_2 = QtWidgets.QPushButton(parent=self.icon_only_widget)
-        self.dashboard_2.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/icons/dashboard_light.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.dashboard_2.setIcon(icon2)
-        self.dashboard_2.setIconSize(QtCore.QSize(27, 27))
-        self.dashboard_2.setCheckable(True)
-        self.dashboard_2.setAutoExclusive(True)
-        self.dashboard_2.setObjectName("dashboard_2")
-        self.verticalLayout.addWidget(self.dashboard_2)
-        self.menu_2 = QtWidgets.QPushButton(parent=self.icon_only_widget)
-        self.menu_2.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/icons/hamburger_light.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.menu_2.setIcon(icon3)
-        self.menu_2.setIconSize(QtCore.QSize(27, 27))
-        self.menu_2.setCheckable(True)
-        self.menu_2.setAutoExclusive(True)
-        self.menu_2.setObjectName("menu_2")
-        self.verticalLayout.addWidget(self.menu_2)
-        self.gridLayout.addLayout(self.verticalLayout, 1, 0, 1, 1)
-        self.gridLayout_2.addWidget(self.icon_only_widget, 0, 1, 2, 1)
         self.icon_name_widget = QtWidgets.QWidget(parent=self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -146,9 +33,7 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QLabel{\n"
-"    qproperty-alignment: AlignRight;\n"
-"    padding-top: 7px;\n"
-"    padding-left: 20px;\n"
+"    qproperty-alignment: AlignCenter;\n"
 "    font-weight: bold;\n"
 "    color: rgb(170, 170, 255);\n"
 "}\n"
@@ -172,31 +57,21 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, -1, 6, -1)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setContentsMargins(-1, 7, -1, -1)
+        self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(-1, -1, 5, -1)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.compress_sidebar = QtWidgets.QPushButton(parent=self.icon_name_widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
+        self.header_label = QtWidgets.QLabel(parent=self.icon_name_widget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.compress_sidebar.sizePolicy().hasHeightForWidth())
-        self.compress_sidebar.setSizePolicy(sizePolicy)
-        self.compress_sidebar.setMinimumSize(QtCore.QSize(0, 0))
-        self.compress_sidebar.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.compress_sidebar.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
-        self.compress_sidebar.setAutoFillBackground(False)
-        self.compress_sidebar.setText("")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/icons/compress_light_purple.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.compress_sidebar.setIcon(icon4)
-        self.compress_sidebar.setIconSize(QtCore.QSize(27, 27))
-        self.compress_sidebar.setCheckable(False)
-        self.compress_sidebar.setChecked(False)
-        self.compress_sidebar.setObjectName("compress_sidebar")
-        self.horizontalLayout_2.addWidget(self.compress_sidebar)
-        self.header_label = QtWidgets.QLabel(parent=self.icon_name_widget)
+        sizePolicy.setHeightForWidth(self.header_label.sizePolicy().hasHeightForWidth())
+        self.header_label.setSizePolicy(sizePolicy)
         self.header_label.setMaximumSize(QtCore.QSize(130, 16777215))
         self.header_label.setObjectName("header_label")
         self.horizontalLayout_2.addWidget(self.header_label)
@@ -205,53 +80,72 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setContentsMargins(0, 15, 0, 10)
+        self.verticalLayout_2.setContentsMargins(0, 8, 0, 10)
         self.verticalLayout_2.setSpacing(15)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.dashboard_1 = QtWidgets.QPushButton(parent=self.icon_name_widget)
-        self.dashboard_1.setIcon(icon2)
-        self.dashboard_1.setIconSize(QtCore.QSize(27, 27))
-        self.dashboard_1.setCheckable(True)
-        self.dashboard_1.setAutoExclusive(True)
-        self.dashboard_1.setObjectName("dashboard_1")
-        self.verticalLayout_2.addWidget(self.dashboard_1)
-        self.menu_1 = QtWidgets.QPushButton(parent=self.icon_name_widget)
-        self.menu_1.setIcon(icon3)
-        self.menu_1.setIconSize(QtCore.QSize(27, 27))
-        self.menu_1.setCheckable(True)
-        self.menu_1.setAutoExclusive(True)
-        self.menu_1.setObjectName("menu_1")
-        self.verticalLayout_2.addWidget(self.menu_1)
+        self.dashboard_button = QtWidgets.QPushButton(parent=self.icon_name_widget)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/dashboard_light.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.dashboard_button.setIcon(icon)
+        self.dashboard_button.setIconSize(QtCore.QSize(27, 27))
+        self.dashboard_button.setCheckable(True)
+        self.dashboard_button.setAutoExclusive(True)
+        self.dashboard_button.setObjectName("dashboard_button")
+        self.verticalLayout_2.addWidget(self.dashboard_button)
+        self.menu_button = QtWidgets.QPushButton(parent=self.icon_name_widget)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/icons/hamburger_light.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.menu_button.setIcon(icon1)
+        self.menu_button.setIconSize(QtCore.QSize(27, 27))
+        self.menu_button.setCheckable(True)
+        self.menu_button.setAutoExclusive(True)
+        self.menu_button.setObjectName("menu_button")
+        self.verticalLayout_2.addWidget(self.menu_button)
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
         spacerItem2 = QtWidgets.QSpacerItem(20, 642, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem2)
-        self.settings_1 = QtWidgets.QPushButton(parent=self.icon_name_widget)
-        self.settings_1.setIcon(icon)
-        self.settings_1.setIconSize(QtCore.QSize(27, 27))
-        self.settings_1.setCheckable(True)
-        self.settings_1.setAutoExclusive(True)
-        self.settings_1.setObjectName("settings_1")
-        self.verticalLayout_4.addWidget(self.settings_1)
+        self.settings_button = QtWidgets.QPushButton(parent=self.icon_name_widget)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/icons/settings_light.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.settings_button.setIcon(icon2)
+        self.settings_button.setIconSize(QtCore.QSize(27, 27))
+        self.settings_button.setCheckable(True)
+        self.settings_button.setAutoExclusive(True)
+        self.settings_button.setObjectName("settings_button")
+        self.verticalLayout_4.addWidget(self.settings_button)
         self.gridLayout_2.addWidget(self.icon_name_widget, 0, 0, 1, 1)
+        self.main_view = QtWidgets.QWidget(parent=self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.main_view.sizePolicy().hasHeightForWidth())
+        self.main_view.setSizePolicy(sizePolicy)
+        self.main_view.setMinimumSize(QtCore.QSize(600, 400))
+        self.main_view.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.main_view.setStyleSheet("QWidget{\n"
+"    background-color: rgb(49, 49, 49);\n"
+"}")
+        self.main_view.setObjectName("main_view")
+        self.stackedWidget = QtWidgets.QStackedWidget(parent=self.main_view)
+        self.stackedWidget.setGeometry(QtCore.QRect(0, 0, 760, 520))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.stackedWidget.sizePolicy().hasHeightForWidth())
+        self.stackedWidget.setSizePolicy(sizePolicy)
+        self.stackedWidget.setMinimumSize(QtCore.QSize(600, 400))
+        self.stackedWidget.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.stackedWidget.setObjectName("stackedWidget")
+        self.gridLayout_2.addWidget(self.main_view, 0, 1, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.compress_sidebar.clicked.connect(self.icon_name_widget.hide) # type: ignore
-        self.expand_sidebar.clicked.connect(self.icon_name_widget.show) # type: ignore
-        self.compress_sidebar.clicked.connect(self.icon_only_widget.show) # type: ignore
-        self.expand_sidebar.clicked.connect(self.icon_only_widget.hide) # type: ignore
-        self.dashboard_1.toggled['bool'].connect(self.dashboard_2.setChecked) # type: ignore
-        self.menu_1.toggled['bool'].connect(self.menu_2.setChecked) # type: ignore
-        self.settings_1.toggled['bool'].connect(self.settings_2.setChecked) # type: ignore
-        self.dashboard_2.toggled['bool'].connect(self.dashboard_1.setChecked) # type: ignore
-        self.menu_2.toggled['bool'].connect(self.menu_1.setChecked) # type: ignore
-        self.settings_2.toggled['bool'].connect(self.settings_1.setChecked) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.header_label.setText(_translate("MainWindow", "Navigate in CBA"))
-        self.dashboard_1.setText(_translate("MainWindow", "Dashboard"))
-        self.menu_1.setText(_translate("MainWindow", "Menu"))
-        self.settings_1.setText(_translate("MainWindow", "Settings"))
+        self.dashboard_button.setText(_translate("MainWindow", "Dashboard"))
+        self.menu_button.setText(_translate("MainWindow", "Menu"))
+        self.settings_button.setText(_translate("MainWindow", "Settings"))

@@ -18,6 +18,7 @@ jupyterlab-widgets==3.0.9
 MarkupSafe==2.1.4
 matplotlib-inline==0.1.6
 numpy==1.26.3
+opencv-python==4.9.0.80
 pandas==2.2.0
 parso==0.8.3
 pexpect==4.9.0
