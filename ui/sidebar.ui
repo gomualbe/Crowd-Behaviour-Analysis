@@ -88,6 +88,12 @@ QPushButton:checked{
        </property>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>7</number>
+         </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <property name="spacing">
@@ -154,7 +160,7 @@ QPushButton:checked{
           <number>0</number>
          </property>
          <property name="topMargin">
-          <number>15</number>
+          <number>8</number>
          </property>
          <property name="rightMargin">
           <number>0</number>

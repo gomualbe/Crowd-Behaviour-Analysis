@@ -8,6 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -56,6 +57,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, -1, 6, -1)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setContentsMargins(-1, 7, -1, -1)
+        self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(-1, -1, 5, -1)
@@ -77,7 +80,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setContentsMargins(0, 15, 0, 10)
+        self.verticalLayout_2.setContentsMargins(0, 8, 0, 10)
         self.verticalLayout_2.setSpacing(15)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.dashboard_button = QtWidgets.QPushButton(parent=self.icon_name_widget)

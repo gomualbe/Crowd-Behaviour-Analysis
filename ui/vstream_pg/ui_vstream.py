@@ -12,16 +12,28 @@ class Ui_vstream(QLabel):
 
         self.connect_button = QPushButton("Connect")
         self.connect_button.setFixedHeight(20)
-        self.connect_button.setFixedWidth(100)
+        self.connect_button.setFixedWidth(80)
         self.connect_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed) # Not expanding
+        self.connect_button.setStyleSheet("color: rgb(238, 238, 238); background-color: rgb(91,91,133); "
+                                          "border-radius: 10px; font-weight: bold;")
+
+        self.quit_button = QPushButton("Quit")
+        self.quit_button.setFixedHeight(20)
+        self.quit_button.setFixedWidth(80)
+        self.quit_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)  # Not expanding
+        self.quit_button.setStyleSheet("color: rgb(238, 238, 238); background-color: rgb(91,91,133); "
+                                       "border-radius: 10px; font-weight: bold;")
 
         self.link_lineedit = QLineEdit()
         self.link_lineedit.setFixedHeight(20)
         self.link_lineedit.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed) # Only Horiz. expand
+        self.link_lineedit.setStyleSheet("color: rgb(238, 238, 238); background-color: rgb(39, 39, 39); "
+                                         "border-radius: 10px; padding-left:10px;")
 
-        # Put LineEdit and Button in a Horiz. layout
+        # Put LineEdit and buttons in a Horiz. layout
         self.horiz_layout.addWidget(self.link_lineedit)
         self.horiz_layout.addWidget(self.connect_button)
+        self.horiz_layout.addWidget(self.quit_button)
 
         # Stream Label
         self.stream_label = QLabel()
@@ -37,6 +49,7 @@ class Ui_vstream(QLabel):
 
         # If the button has been clicked, send the link to the new class
         self.connect_button.clicked.connect(self.setStream)
+        self.quit_button.clicked.connect(self.deleteStream)
 
     def setStream(self):
         link = ''

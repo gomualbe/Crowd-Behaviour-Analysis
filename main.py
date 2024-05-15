@@ -3,7 +3,7 @@ import sidebar_menu
 from PyQt6.QtWidgets import QApplication
 
 MW_WIDTH = 1000
-MW_HEIGHT = 530
+MW_HEIGHT = 510
 
 if __name__ == "__main__":
     ui_update() # Check if the ui file has been modified, if so, update the py file
