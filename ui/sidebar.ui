@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
-    <height>500</height>
+    <width>993</width>
+    <height>525</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,237 +33,6 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <item row="0" column="2" colspan="2">
-     <widget class="QWidget" name="main_view" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>600</width>
-        <height>400</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QWidget{
-	background-color: rgb(49, 49, 49);
-}</string>
-      </property>
-      <widget class="QStackedWidget" name="stackedWidget">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>691</width>
-         <height>501</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>600</width>
-         <height>400</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <widget class="QWidget" name="page"/>
-       <widget class="QWidget" name="page_2"/>
-       <widget class="QWidget" name="page_3"/>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="1" rowspan="2">
-     <widget class="QWidget" name="icon_only_widget" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>500</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>61</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QWidget{
-	background-color: rgb(39, 39, 39);
-}
-
-QLabel{
-	qproperty-alignment: AlignCenter;
-	font-weight: bold;
-	color: rgb(238, 238, 238);
-}
-
-QPushButton{
-	color: rgb(238, 238, 238);
-	height: 30px;
-	border: none;
-	margin-right: 9px;
-	margin-left: 9px;
-	border-top-right-radius: 10px;
-	border-top-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-}
-
-QPushButton:checked{
-	font-weight: bold;
-	background-color: rgb(91,91,133)
-}</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>12</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <item row="3" column="0">
-        <widget class="QPushButton" name="settings_2">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resources.qrc">
-           <normaloff>:/icons/settings_light.png</normaloff>:/icons/settings_light.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>27</width>
-           <height>27</height>
-          </size>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="autoExclusive">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <spacer name="v_spacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>642</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="expand_sidebar">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resources.qrc">
-           <normaloff>:/icons/expand_light_purple.png</normaloff>:/icons/expand_light_purple.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>27</width>
-           <height>27</height>
-          </size>
-         </property>
-         <property name="checkable">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <property name="spacing">
-          <number>15</number>
-         </property>
-         <property name="topMargin">
-          <number>15</number>
-         </property>
-         <property name="bottomMargin">
-          <number>10</number>
-         </property>
-         <item>
-          <widget class="QPushButton" name="dashboard_2">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/dashboard_light.png</normaloff>:/icons/dashboard_light.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>27</width>
-             <height>27</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="autoExclusive">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="menu_2">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/hamburger_light.png</normaloff>:/icons/hamburger_light.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>27</width>
-             <height>27</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="autoExclusive">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="0" column="0">
      <widget class="QWidget" name="icon_name_widget" native="true">
       <property name="sizePolicy">
@@ -290,9 +59,7 @@ QPushButton:checked{
 }
 
 QLabel{
-	qproperty-alignment: AlignRight;
-	padding-top: 7px;
-	padding-left: 20px;
+	qproperty-alignment: AlignCenter;
 	font-weight: bold;
 	color: rgb(170, 170, 255);
 }
@@ -330,54 +97,26 @@ QPushButton:checked{
             <number>5</number>
            </property>
            <item>
-            <widget class="QPushButton" name="compress_sidebar">
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="header_label">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="resources.qrc">
-               <normaloff>:/icons/compress_light_purple.png</normaloff>:/icons/compress_light_purple.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>27</width>
-               <height>27</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>false</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="header_label">
              <property name="maximumSize">
               <size>
                <width>130</width>
@@ -424,7 +163,7 @@ QPushButton:checked{
           <number>10</number>
          </property>
          <item>
-          <widget class="QPushButton" name="dashboard_1">
+          <widget class="QPushButton" name="dashboard_button">
            <property name="text">
             <string>Dashboard</string>
            </property>
@@ -447,7 +186,7 @@ QPushButton:checked{
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="menu_1">
+          <widget class="QPushButton" name="menu_button">
            <property name="text">
             <string>Menu</string>
            </property>
@@ -485,7 +224,7 @@ QPushButton:checked{
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="settings_1">
+        <widget class="QPushButton" name="settings_button">
          <property name="text">
           <string>Settings</string>
          </property>
@@ -510,172 +249,66 @@ QPushButton:checked{
       </layout>
      </widget>
     </item>
+    <item row="0" column="1" colspan="2">
+     <widget class="QWidget" name="main_view" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>600</width>
+        <height>400</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget{
+	background-color: rgb(49, 49, 49);
+}</string>
+      </property>
+      <widget class="QStackedWidget" name="stackedWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>760</width>
+         <height>520</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>600</width>
+         <height>400</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>
  <resources>
   <include location="resources.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>compress_sidebar</sender>
-   <signal>clicked()</signal>
-   <receiver>icon_name_widget</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>44</x>
-     <y>43</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>277</x>
-     <y>219</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>expand_sidebar</sender>
-   <signal>clicked()</signal>
-   <receiver>icon_name_widget</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>269</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>106</x>
-     <y>252</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>compress_sidebar</sender>
-   <signal>clicked()</signal>
-   <receiver>icon_only_widget</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>44</x>
-     <y>37</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>279</x>
-     <y>266</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>expand_sidebar</sender>
-   <signal>clicked()</signal>
-   <receiver>icon_only_widget</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>268</x>
-     <y>41</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>278</x>
-     <y>206</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dashboard_1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dashboard_2</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>172</x>
-     <y>84</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>262</x>
-     <y>83</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>menu_1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>menu_2</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>123</x>
-     <y>135</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>259</x>
-     <y>132</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>settings_1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>settings_2</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>123</x>
-     <y>482</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>258</x>
-     <y>476</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dashboard_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dashboard_1</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>95</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>188</x>
-     <y>96</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>menu_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>menu_1</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>244</x>
-     <y>137</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>208</x>
-     <y>138</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>settings_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>settings_1</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>246</x>
-     <y>464</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>210</x>
-     <y>464</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

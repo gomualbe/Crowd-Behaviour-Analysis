@@ -1,23 +1,27 @@
-import ui.resources_rc # foundamental for rendering images
+import ui.resources_rc # Foundamental for rendering images
 from ui.ui_sidebar import Ui_MainWindow
-from PyQt6.QtWidgets import QMainWindow, QApplication, QPushButton
+from ui.vstream_pg.ui_vstream import Ui_vstream
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
+
 
 class Sidebar(QMainWindow, Ui_MainWindow):
-    def __init__(self):
+    def __init__(self, label_width=757, label_height=450):
         super().__init__()
 
         self.setupUi(self)
         self.setWindowTitle("Crowd Behavior Analysis")
-        self.icon_only_widget.hide() # Hide the icon only widget sidebar
 
-        self.dashboard_1.clicked.connect(self.switch_to_firstpage)
-        self.dashboard_2.clicked.connect(self.switch_to_secondpage)
+        # Set the first page in the stacked widget to vstream page
+        self.vstream = Ui_vstream(label_width, label_height)
+        self.stackedWidget.addWidget(self.vstream)
+        self.dashboard_button.click() # Simulate the click - we are in the first page when we start
 
-        self.menu_1.clicked.connect(self.switch_to_secondpage)
-        self.menu_2.clicked.connect(self.switch_to_thirdpage)
-
-        self.settings_1.clicked.connect(self.switch_to_thirdpage)
-        self.settings_2.clicked.connect(self.switch_to_firstpage)
+        # "Listeners"
+        self.dashboard_button.clicked.connect(self.switch_to_firstpage)
+        self.menu_button.clicked.connect(self.switch_to_secondpage)
+        self.settings_button.clicked.connect(self.switch_to_thirdpage)
 
     def switch_to_firstpage(self):
         self.stackedWidget.setCurrentIndex(0)
