@@ -47,3 +47,4 @@ vibecheck==0.0.4
 wcwidth==0.2.13
 Werkzeug==3.0.1
 widgetsnbextension==4.0.9
+imutils~=0.5.4
