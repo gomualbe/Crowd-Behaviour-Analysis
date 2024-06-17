@@ -1,13 +1,10 @@
 import ui.resources_rc # Foundamental for rendering images
 from ui.ui_sidebar import Ui_MainWindow
 from ui.vstream_pg.ui_vstream import Ui_vstream
-from PyQt6 import QtCore
-from PyQt6.QtWidgets import *
-from PyQt6.QtCore import *
-
+from PyQt6.QtWidgets import QMainWindow
 
 class Sidebar(QMainWindow, Ui_MainWindow):
-    def __init__(self, label_width=757, label_height=450):
+    def __init__(self, label_width=1056, label_height=594):
         super().__init__()
 
         self.setupUi(self)

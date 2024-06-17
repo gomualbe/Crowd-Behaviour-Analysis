@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>993</width>
-    <height>525</height>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,14 +43,14 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>230</width>
-        <height>500</height>
+        <width>200</width>
+        <height>720</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>230</width>
-        <height>16777215</height>
+        <width>200</width>
+        <height>720</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -285,8 +285,8 @@ QPushButton:checked{
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>760</width>
-         <height>520</height>
+         <width>1080</width>
+         <height>720</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -297,14 +297,14 @@ QPushButton:checked{
        </property>
        <property name="minimumSize">
         <size>
-         <width>600</width>
-         <height>400</height>
+         <width>1080</width>
+         <height>720</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>16777215</width>
-         <height>16777215</height>
+         <width>1080</width>
+         <height>720</height>
         </size>
        </property>
       </widget>

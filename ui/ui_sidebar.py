@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(993, 525)
+        MainWindow.resize(993, 720)
         MainWindow.setStyleSheet("background-color: rgb(245, 250, 254);")
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -26,8 +26,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.icon_name_widget.sizePolicy().hasHeightForWidth())
         self.icon_name_widget.setSizePolicy(sizePolicy)
-        self.icon_name_widget.setMinimumSize(QtCore.QSize(230, 500))
-        self.icon_name_widget.setMaximumSize(QtCore.QSize(230, 16777215))
+        self.icon_name_widget.setMinimumSize(QtCore.QSize(200, 720))
+        self.icon_name_widget.setMaximumSize(QtCore.QSize(200, 720))
         self.icon_name_widget.setStyleSheet("QWidget{\n"
 "    background-color: rgb(39, 39, 39);\n"
 "}\n"
@@ -127,14 +127,14 @@ class Ui_MainWindow(object):
 "}")
         self.main_view.setObjectName("main_view")
         self.stackedWidget = QtWidgets.QStackedWidget(parent=self.main_view)
-        self.stackedWidget.setGeometry(QtCore.QRect(0, 0, 760, 520))
+        self.stackedWidget.setGeometry(QtCore.QRect(0, 0, 1080, 720))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.stackedWidget.sizePolicy().hasHeightForWidth())
         self.stackedWidget.setSizePolicy(sizePolicy)
-        self.stackedWidget.setMinimumSize(QtCore.QSize(600, 400))
-        self.stackedWidget.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.stackedWidget.setMinimumSize(QtCore.QSize(1080, 720))
+        self.stackedWidget.setMaximumSize(QtCore.QSize(1080, 720))
         self.stackedWidget.setObjectName("stackedWidget")
         self.gridLayout_2.addWidget(self.main_view, 0, 1, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
