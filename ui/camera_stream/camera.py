@@ -4,24 +4,22 @@ from PyQt6 import QtCore, QtGui
 from PyQt6.QtWidgets import QLabel, QWidget
 from threading import Thread
 from collections import deque
-from datetime import datetime
 import time
 import cv2
 import imutils
 
-class CameraWidget(QWidget):
+class Camera(QWidget):
     """Independent camera feed
     Uses threading to grab IP camera frames in the background
 
     @param width - Width of the video frame
     @param height - Height of the video frame
     @param stream_link - IP/RTSP/Webcam link
-    @param aspect_ratio - Whether to maintain frame aspect ratio or force into fraame
+    @param aspect_ratio - Whether to maintain frame aspect ratio or force into frame
     """
-    clicked = PyQt6.QtCore.pyqtSignal()
 
     def __init__(self, width, height, stream_link=0, aspect_ratio=True, parent=None, deque_size=1):
-        super(CameraWidget, self).__init__(parent)
+        super(Camera, self).__init__(parent)
 
         # Initialize deque used to store frames read from the stream
         self.deque = deque(maxlen=deque_size)
@@ -74,7 +72,7 @@ class CameraWidget(QWidget):
         return True
 
     def get_frame(self):
-        """Reads frame, resizes, and converts image to pixmap"""
+        """Grabs frame from stream"""
         while True:
             try:
                 if self.capture.isOpened() and self.online:
@@ -100,6 +98,16 @@ class CameraWidget(QWidget):
         while time.time() < time_end:
             PyQt6.QtWidgets.QApplication.processEvents()
 
+    def set_pixmap(self):
+        if hasattr(self, 'frame'):
+            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+            h, w, ch = self.frame.shape
+            bytesPerLine = ch * w
+            convertToQtFormat = QtGui.QImage(self.frame.data, w, h, bytesPerLine, QtGui.QImage.Format.Format_RGB888)
+            p = convertToQtFormat.scaled(self.screen_width, self.screen_height,
+                                         PyQt6.QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+            self.video_frame.setPixmap(QtGui.QPixmap.fromImage(p))
+
     def set_frame(self):
         """Sets pixmap image to video frame"""
         if not self.online:
@@ -117,30 +125,10 @@ class CameraWidget(QWidget):
             else:
                 self.frame = cv2.resize(frame, (self.screen_width, self.screen_height))
 
-            # Add timestamp to cameras
-            cv2.rectangle(self.frame, (self.screen_width - 80, 0), (self.screen_width, 17), color=(0, 0, 0),
-                          thickness=-1)
-            cv2.putText(self.frame, datetime.now().strftime('%H:%M:%S'), (self.screen_width - 80, 14),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), lineType=cv2.LINE_AA)
-
-            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-            h, w, ch = self.frame.shape
-            bytesPerLine = ch * w
-            convertToQtFormat = QtGui.QImage(self.frame.data, w, h, bytesPerLine, QtGui.QImage.Format.Format_RGB888)
-            p = convertToQtFormat.scaled(self.screen_width, self.screen_height, PyQt6.QtCore.Qt.AspectRatioMode.KeepAspectRatio)
-            self.video_frame.setPixmap(QtGui.QPixmap.fromImage(p))
+            self.set_pixmap()
 
     def get_video_frame(self):
         return self.video_frame
 
-    def mousePressEvent(self, event):
-        if event.butt == PyQt6.Qt.MouseButton.LeftButton:
-            self.pressPos = event.pos()
-
-    def mouseReleaseEvent(self, event):
-        # Ensure that the left button was pressed and released within the geometry of the widget
-        # if so, emit the signal
-        if self.pressPos is not None and event.button() == PyQt6.Qt.MouseButton.LeftButton:
-            self.clicked.emit()
-
-        self.pressPos = None
+    def get_link(self):
+        return self.camera_stream_link
