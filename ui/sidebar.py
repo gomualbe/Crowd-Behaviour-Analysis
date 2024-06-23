@@ -1,6 +1,6 @@
 import PyQt6
 from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel
-from ui.camera_stream.camera_widget import CameraWidget, Camera
+from ui.camera_stream.camera_widget import CameraWidget
 
 class Sidebar(QWidget):
     def __init__(self, width, height, links, main_window):
@@ -53,10 +53,11 @@ class Sidebar(QWidget):
         print('Creating camera widgets...')
         for i in range(self.n_links):
             frame_width = self.width - 40
-            frame_height = frame_width * 9 / 16
+            frame_height = int(frame_width * 9 / 16)
 
             camera_widget = CameraWidget(int(frame_width), int(frame_height), self.links[i])
             camera_widget.video_frame.mousePressEvent = lambda event, index=i: self.camera_clicked(index)
+            # camera_widget.video_frame.mousePressEvent = lambda event, index=i: self.camera_clicked_2(index)
             camera_widget.video_frame.setStyleSheet(f'qproperty-alignment: {int(PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)};')
             self.cameras.append(camera_widget)
 
@@ -70,6 +71,16 @@ class Sidebar(QWidget):
                 self.cameras[index].video_frame.setStyleSheet("border: 2px solid rgb(91,91,133);")
 
         self.main_window.camera_label.setText(f'Camera No.: {index+1}')
+        self.main_window.change_camera(self.links[index])
 
-        # TODO: Update main with selected video stream
-        # self.main_window.change_camera(index)
+    # def camera_clicked_2(self, index):
+    #     print(f'Camera no. {index+1} clicked...')
+    #
+    #     for i in range(self.n_links):
+    #         if i != index:
+    #             self.cameras[i].video_frame.setStyleSheet("border: 2px solid rgb(39,39,39);")
+    #         else:
+    #             self.cameras[index].video_frame.setStyleSheet("border: 2px solid rgb(91,91,133);")
+    #
+    #     self.main_window.camera_label.setText(f'Camera No.: {index+1}')
+    #     self.main_window.switch_camera(self.cameras[index].video_frame, index)

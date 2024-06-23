@@ -1,5 +1,4 @@
-import PyQt6
-from PyQt6.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QWidget
 from ui.camera_stream.camera import Camera
 
 class Analysis(QWidget):
@@ -13,34 +12,26 @@ class Analysis(QWidget):
         self.links = links
 
         self.camera = None
-        self.widget = None
 
         self.setup_camera(self.links[0])
 
     def setup_camera(self, link):
-        width = self.width - 30
-        height = width * 9 / 16
+        width = self.width - 40
+        height = int(width * 9 / 16)
 
-        self.camera = Camera(width, int(height), link)
+        self.camera = Camera(width, height, link)
         frame = self.camera.get_video_frame()
-        frame.setStyleSheet('margin-bottom: 60;')
+        frame.setStyleSheet('qproperty-alignment: AlignCenter;'
+                            'margin-top: 10px;')
 
-        self.widget = QWidget()
-        layout = QVBoxLayout()
-        layout.addWidget(frame)
-        self.widget.setLayout(layout)
-
-        self.main_window.set_camera_frame(self.widget)
+        print('Camera frame taken')
+        self.main_window.set_camera_frame(frame)
 
     def update_camera(self, link):
-        self.camera.capture.release()
-        self.camera.deleteLater()
+        if self.camera:
+            print('Deleting stream...')
+            self.camera.delete_stream()
 
+        print('Updating camera...')
+        self.main_window.remove_camera_frame()
         self.setup_camera(link)
-
-    # def update_camera(self, camera):
-    #     self.all.removeWidget(self.stream)
-    #
-    #     self.stream = camera
-    #     self.stream.setStyleSheet(f'qproperty-alignment: {int(PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)};')
-    #     self.all.addWidget(self.stream)

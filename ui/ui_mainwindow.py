@@ -12,11 +12,23 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1280, 721)
+        MainWindow.resize(1280, 708)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setMinimumSize(QtCore.QSize(1280, 708))
+        MainWindow.setMaximumSize(QtCore.QSize(1280, 708))
         MainWindow.setStyleSheet("background-color: rgb(245, 250, 254);")
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
-        self.centralwidget.setMinimumSize(QtCore.QSize(1280, 720))
-        self.centralwidget.setMaximumSize(QtCore.QSize(1280, 720))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        self.centralwidget.setSizePolicy(sizePolicy)
+        self.centralwidget.setMinimumSize(QtCore.QSize(1280, 708))
+        self.centralwidget.setMaximumSize(QtCore.QSize(1280, 708))
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -28,8 +40,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sidebar_widget.sizePolicy().hasHeightForWidth())
         self.sidebar_widget.setSizePolicy(sizePolicy)
-        self.sidebar_widget.setMinimumSize(QtCore.QSize(224, 720))
-        self.sidebar_widget.setMaximumSize(QtCore.QSize(224, 720))
+        self.sidebar_widget.setMinimumSize(QtCore.QSize(224, 708))
+        self.sidebar_widget.setMaximumSize(QtCore.QSize(224, 708))
         self.sidebar_widget.setStyleSheet("QWidget{\n"
 "    background-color: rgb(39, 39, 39);\n"
 "}\n"
@@ -85,58 +97,64 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 222, 663))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scroll_area.setWidget(self.scrollAreaWidgetContents)
-        self.verticalLayout_4.addWidget(self.scroll_area, 0, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.verticalLayout_4.addWidget(self.scroll_area)
         self.gridLayout_2.addWidget(self.sidebar_widget, 0, 0, 1, 1)
         self.main_view = QtWidgets.QWidget(parent=self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.main_view.sizePolicy().hasHeightForWidth())
         self.main_view.setSizePolicy(sizePolicy)
-        self.main_view.setMinimumSize(QtCore.QSize(600, 400))
-        self.main_view.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.main_view.setMinimumSize(QtCore.QSize(1056, 708))
+        self.main_view.setMaximumSize(QtCore.QSize(1056, 708))
         self.main_view.setStyleSheet("QWidget{\n"
 "    background-color: rgb(49, 49, 49);\n"
+"    width: 1056;\n"
+"    height: 708;\n"
 "}")
         self.main_view.setObjectName("main_view")
         self.verticalLayoutWidget = QtWidgets.QWidget(parent=self.main_view)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1224, 721))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.main_vert_layout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.main_vert_layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetMaximumSize)
+        self.main_vert_layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
         self.main_vert_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_vert_layout.setSpacing(0)
         self.main_vert_layout.setObjectName("main_vert_layout")
         self.main_hor_layout = QtWidgets.QHBoxLayout()
+        self.main_hor_layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
         self.main_hor_layout.setObjectName("main_hor_layout")
         self.camera_label = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.camera_label.sizePolicy().hasHeightForWidth())
         self.camera_label.setSizePolicy(sizePolicy)
-        self.camera_label.setMinimumSize(QtCore.QSize(0, 0))
-        self.camera_label.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.camera_label.setMinimumSize(QtCore.QSize(528, 70))
+        self.camera_label.setMaximumSize(QtCore.QSize(528, 70))
         self.camera_label.setStyleSheet("QLabel{\n"
-"    qproperty-alignment: AlignVCenter;\n"
-"    margin-left: 10;\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
 "    padding-top: 55;\n"
+"    padding-bottom: 0;\n"
 "    font-weight: bold;\n"
 "    color: rgb(91, 91, 133);\n"
-"}")
-        self.camera_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter)
+"}\n"
+"")
+        self.camera_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading)
         self.camera_label.setObjectName("camera_label")
         self.main_hor_layout.addWidget(self.camera_label)
         self.count_label = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.count_label.sizePolicy().hasHeightForWidth())
         self.count_label.setSizePolicy(sizePolicy)
-        self.count_label.setMinimumSize(QtCore.QSize(0, 0))
-        self.count_label.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_label.setMinimumSize(QtCore.QSize(528, 70))
+        self.count_label.setMaximumSize(QtCore.QSize(528, 70))
         self.count_label.setStyleSheet("QLabel{\n"
 "    qproperty-alignment: AlignRight;\n"
-"    margin-right: 210;\n"
+"    margin-right: 40;\n"
 "    padding-top: 55;\n"
 "    padding-bottom: 0;\n"
 "    font-weight: bold;\n"
@@ -146,7 +164,7 @@ class Ui_MainWindow(object):
         self.count_label.setObjectName("count_label")
         self.main_hor_layout.addWidget(self.count_label)
         self.main_vert_layout.addLayout(self.main_hor_layout)
-        self.gridLayout_2.addWidget(self.main_view, 0, 1, 1, 2)
+        self.gridLayout_2.addWidget(self.main_view, 0, 1, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
