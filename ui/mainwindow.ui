@@ -145,10 +145,16 @@ QPushButton:checked{
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>28</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>130</width>
-             <height>16777215</height>
+             <height>28</height>
             </size>
            </property>
            <property name="text">
@@ -173,6 +179,12 @@ QPushButton:checked{
        </item>
        <item>
         <widget class="QScrollArea" name="scroll_area">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>224</width>
@@ -182,7 +194,7 @@ QPushButton:checked{
          <property name="maximumSize">
           <size>
            <width>224</width>
-           <height>665</height>
+           <height>708</height>
           </size>
          </property>
          <property name="verticalScrollBarPolicy">
