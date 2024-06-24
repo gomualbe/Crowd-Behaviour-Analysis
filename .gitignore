@@ -1,2 +1,3 @@
+./camera_links.txt
 /env
-/camera_links.txt
+*.pyc
