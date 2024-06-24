@@ -7,8 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>721</height>
+    <height>708</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1280</width>
+    <height>708</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1280</width>
+    <height>708</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -17,16 +35,22 @@
    <string notr="true">background-color: rgb(245, 250, 254);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="minimumSize">
     <size>
      <width>1280</width>
-     <height>720</height>
+     <height>708</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>1280</width>
-     <height>720</height>
+     <height>708</height>
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
@@ -56,13 +80,13 @@
       <property name="minimumSize">
        <size>
         <width>224</width>
-        <height>720</height>
+        <height>708</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>224</width>
-        <height>720</height>
+        <height>708</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -121,10 +145,16 @@ QPushButton:checked{
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>28</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>130</width>
-             <height>16777215</height>
+             <height>28</height>
             </size>
            </property>
            <property name="text">
@@ -147,8 +177,14 @@ QPushButton:checked{
          </item>
         </layout>
        </item>
-       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+       <item>
         <widget class="QScrollArea" name="scroll_area">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>224</width>
@@ -158,7 +194,7 @@ QPushButton:checked{
          <property name="maximumSize">
           <size>
            <width>224</width>
-           <height>665</height>
+           <height>708</height>
           </size>
          </property>
          <property name="verticalScrollBarPolicy">
@@ -185,29 +221,31 @@ QPushButton:checked{
       </layout>
      </widget>
     </item>
-    <item row="0" column="1" colspan="2">
+    <item row="0" column="1" colspan="2" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
      <widget class="QWidget" name="main_view" native="true">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
       <property name="minimumSize">
        <size>
-        <width>600</width>
-        <height>400</height>
+        <width>1056</width>
+        <height>708</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>16777215</width>
-        <height>16777215</height>
+        <width>1056</width>
+        <height>708</height>
        </size>
       </property>
       <property name="styleSheet">
        <string notr="true">QWidget{
 	background-color: rgb(49, 49, 49);
+	width: 1056;
+	height: 708;
 }</string>
       </property>
       <widget class="QWidget" name="verticalLayoutWidget">
@@ -220,45 +258,53 @@ QPushButton:checked{
         </rect>
        </property>
        <layout class="QVBoxLayout" name="main_vert_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="sizeConstraint">
-         <enum>QLayout::SetMaximumSize</enum>
+         <enum>QLayout::SetFixedSize</enum>
         </property>
         <item>
          <layout class="QHBoxLayout" name="main_hor_layout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetFixedSize</enum>
+          </property>
           <item>
            <widget class="QLabel" name="camera_label">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <property name="minimumSize">
              <size>
-              <width>0</width>
-              <height>0</height>
+              <width>528</width>
+              <height>70</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
-              <height>16777215</height>
+              <width>528</width>
+              <height>70</height>
              </size>
             </property>
             <property name="styleSheet">
              <string notr="true">QLabel{
-	qproperty-alignment: AlignVCenter;
-	margin-left: 10;
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
 	padding-top: 55;
+	padding-bottom: 0;
 	font-weight: bold;
 	color: rgb(91, 91, 133);
-}</string>
+}
+</string>
             </property>
             <property name="text">
              <string>Camera No.: 1</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignVCenter</set>
+             <set>Qt::AlignLeading</set>
             </property>
             <property name="margin">
              <number>0</number>
@@ -268,27 +314,27 @@ QPushButton:checked{
           <item>
            <widget class="QLabel" name="count_label">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <property name="minimumSize">
              <size>
-              <width>0</width>
-              <height>0</height>
+              <width>528</width>
+              <height>70</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
-              <height>16777215</height>
+              <width>528</width>
+              <height>70</height>
              </size>
             </property>
             <property name="styleSheet">
              <string notr="true">QLabel{
 	qproperty-alignment: AlignRight;
-	margin-right: 210;
+	margin-right: 40;
 	padding-top: 55;
 	padding-bottom: 0;
 	font-weight: bold;
