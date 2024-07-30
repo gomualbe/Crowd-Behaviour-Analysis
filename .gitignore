@@ -1,3 +1,9 @@
 ./camera_links.txt
+
 /env
+/venv
+
 *.pyc
+
+.idea
+.DS_Store
