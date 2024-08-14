@@ -8,7 +8,7 @@ LB_WIDTH = 1056
 LB_HEIGHT = 594
 
 # http://admin:admin@192.168.1.9:8081/video
-# https://192.168.1.10:8080/video
+# https://192.168.1.222:8080/video
 
 if __name__ == "__main__":
     # call("pyuic6 ui/mainwindow.ui -o ui/ui_mainwindow.py", shell=True)
