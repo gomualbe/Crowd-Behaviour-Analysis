@@ -28,9 +28,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.get_links()
 
-        # self.setup_sidebar_test()
-        # self.setup_analysis_test()
-
         self.setup_sidebar()
         self.setup_analysis()
 
@@ -123,6 +120,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.main_vert_layout.removeItem(item)
                 self.video_label = None
                 print('Camera frame removed')
+
+    def update_people_count(self, count):
+        self.count_label.setText(f'Count: {count}')
 
     # def switch_camera(self, video_frame, index):
     #     if self.video_label:

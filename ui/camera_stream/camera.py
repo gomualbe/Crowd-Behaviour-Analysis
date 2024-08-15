@@ -1,5 +1,6 @@
 import PyQt6.QtCore
 import PyQt6.QtWidgets
+import numpy
 from PyQt6 import QtCore, QtGui
 from PyQt6.QtWidgets import QLabel, QWidget
 from threading import Thread, Event
@@ -40,7 +41,7 @@ class Camera(QWidget):
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.set_frame)
-        self.timer.start(5)
+        self.timer.start(1)
 
         print('Started camera: {}'.format(self.camera_stream_link))
 
@@ -131,3 +132,10 @@ class Camera(QWidget):
 
     def get_link(self):
         return self.camera_stream_link
+
+    def get_current_frame(self):
+        if self.deque and self.online:
+            frame = self.deque[-1].copy()  # Get the latest frame
+            return frame # Return the actual frame if available
+
+        return None  # Return None if there's no frame available

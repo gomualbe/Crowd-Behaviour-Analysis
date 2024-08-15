@@ -4,8 +4,7 @@ from PyQt6 import QtCore
 
 class CameraWidget(Camera):
     """Camera class for multistream page,
-    it adds a signal to the Camera class to emit when the camera is clicked
-    and overrides the set_frame method to add a timestamp to the camera feed"""
+    it adds a signal to the Camera class to emit when the camera is clicked"""
     clicked = PyQt6.QtCore.pyqtSignal()
 
     def __init__(self, width, height, stream_link=0, aspect_ratio=True, parent=None, deque_size=1):

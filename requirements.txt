@@ -13,6 +13,10 @@ torch==2.2.1
 torchvision==0.17.1
 tqdm==4.66.2
 
+# ONNX for cv2 requirements
+onnx==1.16.2
+onnxruntime==1.17.1
+
 # UI requirements
 asttokens==2.4.1
 blinker==1.7.0
