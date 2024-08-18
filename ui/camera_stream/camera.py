@@ -1,6 +1,5 @@
 import PyQt6.QtCore
 import PyQt6.QtWidgets
-import numpy
 from PyQt6 import QtCore, QtGui
 from PyQt6.QtWidgets import QLabel, QWidget
 from threading import Thread, Event
@@ -8,17 +7,51 @@ from collections import deque
 import time
 import cv2
 import imutils
+from PyQt6.QtGui import QPainter, QPen, QColor
+
+
+class GridLabel(QLabel):
+    def __init__(self, width, height):
+        super().__init__()
+        self.grid_rows = 4
+        self.grid_cols = 4
+        self.width = width
+        self.height = height
+        self.x_offset = 0
+        self.y_offset = 0
+
+    def paintEvent(self, event):
+        super().paintEvent(event)
+
+        painter = QPainter(self)
+
+        pen = QPen(QColor(169, 169, 169, 150)) # Light gray color
+        pen.setWidth(1)
+        painter.setPen(pen)
+
+        row_height = self.height // self.grid_rows
+        col_width = self.width // self.grid_cols
+
+        # Draw the grid lines
+        for i in range(1, self.grid_cols):
+            painter.drawLine(self.x_offset + i * col_width, self.y_offset,
+                             self.x_offset + i * col_width, self.y_offset + self.height)
+        for i in range(1, self.grid_rows):
+            painter.drawLine(self.x_offset, self.y_offset + i * row_height,
+                             self.x_offset + self.width, self.y_offset + i * row_height)
+
+        # Write the grid labels
+        for  i in range(self.grid_rows):
+            for j in range(self.grid_cols):
+                label_text = f"Q{i * self.grid_cols + j + 1}"
+                text_pos = QtCore.QPoint(self.x_offset + j * col_width + 5,
+                                         self.y_offset + (i + 1) * row_height - 5)
+                painter.drawText(text_pos, label_text)
+
+        painter.end()
 
 
 class Camera(QWidget):
-    """Independent camera feed
-    Uses threading to grab IP camera frames in the background
-
-    @param width - Width of the video frame
-    @param height - Height of the video frame
-    @param stream_link - IP/RTSP/Webcam link
-    @param aspect_ratio - Whether to maintain frame aspect ratio or force into frame
-    """
 
     def __init__(self, width, height, stream_link=0, aspect_ratio=True, parent=None, deque_size=1):
         super(Camera, self).__init__(parent)
@@ -28,10 +61,12 @@ class Camera(QWidget):
         self.maintain_aspect_ratio = aspect_ratio
         self.camera_stream_link = stream_link
 
-        self.online = False
-        self.capture = None
+        self.grid_label = GridLabel(self.screen_width, self.screen_height)
         self.video_frame = QLabel(self)
         self.stop_event = Event()
+
+        self.online = False
+        self.capture = None
 
         self.load_network_stream()
 
@@ -96,6 +131,19 @@ class Camera(QWidget):
                                          PyQt6.QtCore.Qt.AspectRatioMode.KeepAspectRatio)
             self.video_frame.setPixmap(QtGui.QPixmap.fromImage(p))
 
+            video_width = p.width()
+            video_height = p.height()
+
+            x_offset = (self.screen_width - video_width) // 2
+            y_offset = (self.screen_height - video_height) // 2
+
+            self.grid_label.width = video_width
+            self.grid_label.height = video_height
+            self.grid_label.x_offset = x_offset
+            self.grid_label.y_offset = y_offset
+
+            self.grid_label.update()
+
     def set_frame(self):
         if not self.online:
             self.spin(1)
@@ -110,6 +158,8 @@ class Camera(QWidget):
                 self.frame = cv2.resize(frame, (self.screen_width, self.screen_height))
 
             self.set_pixmap()
+            self.grid_label.setPixmap(self.video_frame.pixmap())  # Set the video frame pixmap
+            self.grid_label.update()  # Redraw the grid on top of the video frame
 
     def delete_stream(self):
         print('Stopping camera: {}'.format(self.camera_stream_link))
@@ -127,8 +177,11 @@ class Camera(QWidget):
         self.online = False
         print('Camera stopped safely.')
 
-    def get_video_frame(self):
-        return self.video_frame
+    def get_video_frame(self, analysis=False):
+        if not analysis:
+            return self.video_frame
+
+        return self.grid_label  # Return the grid label, which now overlays the video stream
 
     def get_link(self):
         return self.camera_stream_link
@@ -136,6 +189,6 @@ class Camera(QWidget):
     def get_current_frame(self):
         if self.deque and self.online:
             frame = self.deque[-1].copy()  # Get the latest frame
-            return frame # Return the actual frame if available
+            return frame  # Return the actual frame if available
 
         return None  # Return None if there's no frame available

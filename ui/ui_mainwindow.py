@@ -12,14 +12,14 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1280, 708)
+        MainWindow.resize(1460, 708)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QtCore.QSize(1280, 708))
-        MainWindow.setMaximumSize(QtCore.QSize(1280, 708))
+        MainWindow.setMinimumSize(QtCore.QSize(1460, 708))
+        MainWindow.setMaximumSize(QtCore.QSize(1460, 708))
         MainWindow.setStyleSheet("background-color: rgb(245, 250, 254);")
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -27,8 +27,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
         self.centralwidget.setSizePolicy(sizePolicy)
-        self.centralwidget.setMinimumSize(QtCore.QSize(1280, 708))
-        self.centralwidget.setMaximumSize(QtCore.QSize(1280, 708))
+        self.centralwidget.setMinimumSize(QtCore.QSize(1460, 708))
+        self.centralwidget.setMaximumSize(QtCore.QSize(1460, 708))
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -111,26 +111,29 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.main_view.sizePolicy().hasHeightForWidth())
         self.main_view.setSizePolicy(sizePolicy)
-        self.main_view.setMinimumSize(QtCore.QSize(1056, 708))
-        self.main_view.setMaximumSize(QtCore.QSize(1056, 708))
+        self.main_view.setMinimumSize(QtCore.QSize(1236, 708))
+        self.main_view.setMaximumSize(QtCore.QSize(1236, 708))
         self.main_view.setStyleSheet("QWidget{\n"
 "    background-color: rgb(49, 49, 49);\n"
-"    width: 1056;\n"
-"    height: 708;\n"
 "}")
         self.main_view.setObjectName("main_view")
-        self.verticalLayoutWidget = QtWidgets.QWidget(parent=self.main_view)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1224, 721))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.main_vert_layout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.layoutWidget = QtWidgets.QWidget(parent=self.main_view)
+        self.layoutWidget.setGeometry(QtCore.QRect(0, 0, 1264, 711))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.main_hor_layout = QtWidgets.QHBoxLayout(self.layoutWidget)
+        self.main_hor_layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
+        self.main_hor_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_hor_layout.setSpacing(0)
+        self.main_hor_layout.setObjectName("main_hor_layout")
+        self.main_vert_layout = QtWidgets.QVBoxLayout()
         self.main_vert_layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
-        self.main_vert_layout.setContentsMargins(0, 0, 0, 0)
         self.main_vert_layout.setSpacing(0)
         self.main_vert_layout.setObjectName("main_vert_layout")
-        self.main_hor_layout = QtWidgets.QHBoxLayout()
-        self.main_hor_layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
-        self.main_hor_layout.setObjectName("main_hor_layout")
-        self.camera_label = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        self.labels_hor_layout = QtWidgets.QHBoxLayout()
+        self.labels_hor_layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
+        self.labels_hor_layout.setContentsMargins(-1, -1, -1, 10)
+        self.labels_hor_layout.setObjectName("labels_hor_layout")
+        self.camera_label = QtWidgets.QLabel(parent=self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -149,8 +152,8 @@ class Ui_MainWindow(object):
 "")
         self.camera_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading)
         self.camera_label.setObjectName("camera_label")
-        self.main_hor_layout.addWidget(self.camera_label)
-        self.count_label = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        self.labels_hor_layout.addWidget(self.camera_label)
+        self.count_label = QtWidgets.QLabel(parent=self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -168,9 +171,187 @@ class Ui_MainWindow(object):
 "}")
         self.count_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
         self.count_label.setObjectName("count_label")
-        self.main_hor_layout.addWidget(self.count_label)
-        self.main_vert_layout.addLayout(self.main_hor_layout)
-        self.gridLayout_2.addWidget(self.main_view, 0, 1, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.labels_hor_layout.addWidget(self.count_label)
+        self.main_vert_layout.addLayout(self.labels_hor_layout)
+        self.main_hor_layout.addLayout(self.main_vert_layout)
+        self.count_vert_layout = QtWidgets.QVBoxLayout()
+        self.count_vert_layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
+        self.count_vert_layout.setObjectName("count_vert_layout")
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.count_vert_layout.addItem(spacerItem2)
+        self.count_q1 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q1.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-top: 50;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"}\n"
+"")
+        self.count_q1.setObjectName("count_q1")
+        self.count_vert_layout.addWidget(self.count_q1)
+        self.count_q2 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q2.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q2.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q2.setObjectName("count_q2")
+        self.count_vert_layout.addWidget(self.count_q2)
+        self.count_q3 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q3.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q3.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q3.setObjectName("count_q3")
+        self.count_vert_layout.addWidget(self.count_q3)
+        self.count_q4 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q4.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q4.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q4.setObjectName("count_q4")
+        self.count_vert_layout.addWidget(self.count_q4)
+        self.count_q5 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q5.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q5.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q5.setObjectName("count_q5")
+        self.count_vert_layout.addWidget(self.count_q5)
+        self.count_q6 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q6.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q6.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q6.setObjectName("count_q6")
+        self.count_vert_layout.addWidget(self.count_q6)
+        self.count_q7 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q7.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q7.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q7.setObjectName("count_q7")
+        self.count_vert_layout.addWidget(self.count_q7)
+        self.count_q8 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q8.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q8.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q8.setObjectName("count_q8")
+        self.count_vert_layout.addWidget(self.count_q8)
+        self.count_q9 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q9.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q9.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q9.setObjectName("count_q9")
+        self.count_vert_layout.addWidget(self.count_q9)
+        self.count_q10 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q10.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.count_q10.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q10.setObjectName("count_q10")
+        self.count_vert_layout.addWidget(self.count_q10)
+        self.count_q11 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q11.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q11.setObjectName("count_q11")
+        self.count_vert_layout.addWidget(self.count_q11)
+        self.count_q12 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q12.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q12.setObjectName("count_q12")
+        self.count_vert_layout.addWidget(self.count_q12)
+        self.count_q13 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q13.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q13.setObjectName("count_q13")
+        self.count_vert_layout.addWidget(self.count_q13)
+        self.count_q14 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q14.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q14.setObjectName("count_q14")
+        self.count_vert_layout.addWidget(self.count_q14)
+        self.count_q15 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q15.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q15.setObjectName("count_q15")
+        self.count_vert_layout.addWidget(self.count_q15)
+        self.count_q16 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.count_q16.setStyleSheet("QLabel{\n"
+"    qproperty-alignment: AlignLeft;\n"
+"    margin-left: 30;\n"
+"    color: rgb(91, 91, 133);\n"
+"    margin-top: 15;\n"
+"}\n"
+"")
+        self.count_q16.setObjectName("count_q16")
+        self.count_vert_layout.addWidget(self.count_q16)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.count_vert_layout.addItem(spacerItem3)
+        self.main_hor_layout.addLayout(self.count_vert_layout)
+        self.gridLayout_2.addWidget(self.main_view, 0, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -182,3 +363,19 @@ class Ui_MainWindow(object):
         self.header_label.setText(_translate("MainWindow", "Select a camera:"))
         self.camera_label.setText(_translate("MainWindow", "Camera No.: 1"))
         self.count_label.setText(_translate("MainWindow", "Count: 0"))
+        self.count_q1.setText(_translate("MainWindow", "Q1 count: 0"))
+        self.count_q2.setText(_translate("MainWindow", "Q2 count: 0"))
+        self.count_q3.setText(_translate("MainWindow", "Q3 count: 0"))
+        self.count_q4.setText(_translate("MainWindow", "Q4 count: 0"))
+        self.count_q5.setText(_translate("MainWindow", "Q5 count: 0"))
+        self.count_q6.setText(_translate("MainWindow", "Q6 count: 0"))
+        self.count_q7.setText(_translate("MainWindow", "Q7 count: 0"))
+        self.count_q8.setText(_translate("MainWindow", "Q8 count: 0"))
+        self.count_q9.setText(_translate("MainWindow", "Q9 count: 0"))
+        self.count_q10.setText(_translate("MainWindow", "Q10 count: 0"))
+        self.count_q11.setText(_translate("MainWindow", "Q11 count: 0"))
+        self.count_q12.setText(_translate("MainWindow", "Q12 count: 0"))
+        self.count_q13.setText(_translate("MainWindow", "Q13 count: 0"))
+        self.count_q14.setText(_translate("MainWindow", "Q14 count: 0"))
+        self.count_q15.setText(_translate("MainWindow", "Q15 count: 0"))
+        self.count_q16.setText(_translate("MainWindow", "Q16 count: 0"))

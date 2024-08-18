@@ -1,3 +1,4 @@
+import PyQt6.QtGui
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtCore import QThread, pyqtSignal
 from ui.camera_stream.camera import Camera
@@ -8,6 +9,7 @@ import torch
 import numpy as np
 import torch.nn.functional as F
 from init_model import load_model, device
+import time
 
 curr_dir = os.path.abspath(os.path.dirname(__file__))
 main_dir = os.path.join(curr_dir, '..')
@@ -16,10 +18,11 @@ onnx_path = os.path.join(main_dir, 'onnx', 'model.onnx')
 class ProcessingThread(QThread):
     people_count_signal = pyqtSignal(int)
 
-    def __init__(self, camera, onnx=False):
+    def __init__(self, camera, window, onnx=False):
         super().__init__()
         self.camera = camera
         self.onnx = onnx
+        self.window = window
 
         if self.onnx:
             self.session = ort.InferenceSession(onnx_path) # Load the ONNX model
@@ -32,7 +35,7 @@ class ProcessingThread(QThread):
         self.camera = camera
 
     def run(self):
-        self.msleep(5000)  # Sleep for 5 seconds before starting the processing loop
+        self.msleep(4000)  # Sleep for 4 seconds before starting the processing loop
 
         while True:
             frame = self.camera.get_current_frame()
@@ -41,73 +44,47 @@ class ProcessingThread(QThread):
                 print("No frame available to process.")
                 continue
 
-            # Resize frame to 224x224 if needed
-            if frame.shape[:2] != (224, 224):
-                frame = cv2.resize(frame, (224, 224))
+            # Grid analysis setup: dividing the frame into a 4x4 grid
+            grid_rows, grid_cols = 4, 4
+            box_height, box_width = frame.shape[0] // grid_rows, frame.shape[1] // grid_cols
+            total_people_count = 0
 
-            if self.onnx:
-                try:
-                    input_blob = cv2.dnn.blobFromImage(frame, scalefactor=1.0 / 255, size=(224, 224), mean=(0, 0, 0),
-                                                       swapRB=True, crop=False)
-                    output = self.session.run(None, {self.session.get_inputs()[0].name: input_blob})
-                    people_count = np.argmax(output[0])
+            start = time.time()
 
-                    print(f"Detected people count: {people_count}")
-                    self.people_count_signal.emit(int(people_count))
-                except Exception as e:
-                    print(f"Error during blob creation or inference: {e}")
-            else:
-                # Convert frame to tensor and move to the device
-                frame = torch.from_numpy(frame).permute(2, 0, 1).unsqueeze(0).float() / 255
+            for i in range(grid_rows):
+                for j in range(grid_cols):
+                    y_start, y_end = i * box_height, (i + 1) * box_height
+                    x_start, x_end = j * box_width, (j + 1) * box_width
+                    grid_section = frame[y_start:y_end, x_start:x_end]
 
-                with torch.no_grad():
-                    frame = frame.to(device)
+                    grid_section = cv2.resize(grid_section, (224, 224))
 
-                    crop_imgs, crop_masks = [], []
-                    b, c, h, w = frame.size()
-                    rh, rw = 224, 224
-                    for i in range(0, h, rh):
-                        gis, gie = max(min(h - rh, i), 0), min(h, i + rh)
-                        for j in range(0, w, rw):
-                            gjs, gje = max(min(w - rw, j), 0), min(w, j + rw)
-                            crop_imgs.append(frame[:, :, gis:gie, gjs:gje])
-                            mask = torch.zeros([b, 1, h, w]).to(device)
-                            mask[:, :, gis:gie, gjs:gje].fill_(1.0)
-                            crop_masks.append(mask)
-                    crop_imgs, crop_masks = map(lambda x: torch.cat(x, dim=0), (crop_imgs, crop_masks))
+                    if self.onnx:
+                        input_blob = cv2.dnn.blobFromImage(grid_section, scalefactor=1.0 / 255, size=(224, 224),
+                                                           mean=(0, 0, 0), swapRB=True, crop=False)
+                        output = self.session.run(None, {self.session.get_inputs()[0].name: input_blob})
+                        people_count = np.argmax(output[0])
+                    else:
+                        grid_section_tensor = (torch.from_numpy(grid_section).permute(2, 0, 1)
+                                               .unsqueeze(0).float() / 255)
+                        grid_section_tensor = grid_section_tensor.to(device)
 
-                    crop_preds = []
-                    nz, bz = crop_imgs.size(0), 8
-                    for i in range(0, nz, bz):
-                        gs, gt = i, min(nz, i + bz)
-                        crop_pred = self.model(crop_imgs[gs:gt])
+                        with torch.no_grad():
+                            crop_pred = self.model(grid_section_tensor)
+                            crop_pred = F.interpolate(crop_pred, size=(box_height, box_width), mode='bilinear',
+                                                      align_corners=True) / 64
+                            people_count = torch.sum(crop_pred).item()
 
-                        _, _, h1, w1 = crop_pred.size()
+                        # Update the people count for the grid section
+                        self.window.update_q_count(i, j, people_count)
 
-                        crop_pred = F.interpolate(crop_pred, size=(h1 * 8, w1 * 8), mode='bilinear',
-                                                  align_corners=True) / 64
+                    total_people_count += int(people_count)
+                    self.msleep(15) # Sleep for 15 milliseconds before processing the next grid section
 
-                        crop_preds.append(crop_pred)
-                    crop_preds = torch.cat(crop_preds, dim=0)
-
-                    # splice them to the original size
-                    idx = 0
-                    pred_map = torch.zeros([b, 1, h, w]).to(device)
-                    for i in range(0, h, rh):
-                        gis, gie = max(min(h - rh, i), 0), min(h, i + rh)
-                        for j in range(0, w, rw):
-                            gjs, gje = max(min(w - rw, j), 0), min(w, j + rw)
-                            pred_map[:, :, gis:gie, gjs:gje] += crop_preds[idx]
-                            idx += 1
-                    # for the overlapping area, compute average value
-                    mask = crop_masks.sum(dim=0).unsqueeze(0)
-                    outputs = pred_map / mask
-                    people_count = torch.sum(outputs).item()
-
-                print(f"Detected people count (PyTorch): {people_count}")
-                self.people_count_signal.emit(int(people_count))
-
-            self.msleep(3000)  # Sleep for 3 seconds
+            end = time.time()
+            print(f"Time taken for full frame processing: {end - start} seconds")
+            print(f"Detected people count (Grid Analysis): {total_people_count}")
+            self.people_count_signal.emit(total_people_count)
 
 class Analysis(QWidget):
     def __init__(self, width, height, links, main_window):
@@ -122,7 +99,7 @@ class Analysis(QWidget):
         self.camera = None
 
         # Separate thread for frame processing
-        self.processing_thread = ProcessingThread(self.camera)
+        self.processing_thread = ProcessingThread(self.camera, self.main_window)
         self.processing_thread.people_count_signal.connect(self.main_window.update_people_count)
 
         self.setup_camera(self.links[0])
@@ -134,9 +111,7 @@ class Analysis(QWidget):
         height = int(width * 9 / 16)
 
         self.camera = Camera(width, height, link)
-        frame_video = self.camera.get_video_frame()
-        frame_video.setStyleSheet('qproperty-alignment: AlignCenter;'
-                                  'margin-top: 10px;')
+        frame_video = self.camera.get_video_frame(analysis=True)
 
         print('Camera frame taken')
         self.main_window.set_camera_frame(frame_video)
