@@ -42,12 +42,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         width = self.label_width - 180
         height = self.label_height - 180
 
-        self.main_view.setStyleSheet("""
-            QVBoxLayout {
-                background-color: rgb(169, 169, 69);
-            }
-        """)#count_vert_layout
-
         self.analysis = Analysis(width, height, self.links, self)
 
     def set_camera_frame(self, label):

@@ -36,36 +36,41 @@ def test_model():
     model = load_model()
     model.eval()
 
-    frame = QPixmap(os.path.join(main_dir, 'circa_23.jpg')) # Load a sample frame (insert your own path)
+    frame = QPixmap(os.path.join(main_dir, 'images', 'IMG_5.jpg')) # Load a sample frame (insert your own path)
     frame = frame.toImage()  # Convert QPixmap to QImage
     frame = qimage_to_numpy(frame)  # Convert QImage to NumPy array
 
-    # Grid analysis setup: dividing the frame into a 4x4 grid
-    grid_rows, grid_cols = 4, 4
-    box_height, box_width = frame.shape[0] // grid_rows, frame.shape[1] // grid_cols
+    # Resize frame to 224x224 if needed
+    if frame.shape[:2] != (224, 224):
+        frame = cv2.resize(frame, (224, 224))
+
+    # Convert frame to tensor and move to the device
+    frame = torch.from_numpy(frame).permute(2, 0, 1).unsqueeze(0).float() / 255
+
+    with torch.no_grad():
+        frame = frame.to(device)
+        density_map = model(frame)
+        density_map = F.interpolate(density_map, size=(224, 224), mode='bilinear', align_corners=True) / 64
+
+    total = density_map.sum(dim=(1, 2, 3)).item()
+
+    # Divide density map into a 4x4 grid and count people in each box
     total_people_count = 0
+    grid_rows, grid_cols = 4, 4
+    box_height, box_width = density_map.shape[2] // grid_rows, density_map.shape[3] // grid_cols
 
     for i in range(grid_rows):
         for j in range(grid_cols):
             y_start, y_end = i * box_height, (i + 1) * box_height
             x_start, x_end = j * box_width, (j + 1) * box_width
-            grid_section = frame[y_start:y_end, x_start:x_end]
 
-            grid_section = cv2.resize(grid_section, (224, 224))
+            grid_section = density_map[:, :, y_start:y_end, x_start:x_end]
+            people_count = torch.sum(grid_section).item()
+            print(f'({i},{j}) count: {people_count}')
 
-            grid_section_tensor = (torch.from_numpy(grid_section).permute(2, 0, 1)
-                                   .unsqueeze(0).float() / 255)
-            grid_section_tensor = grid_section_tensor.to(device)
+            total_people_count += people_count
 
-            with torch.no_grad():
-                crop_pred = model(grid_section_tensor)
-                crop_pred = F.interpolate(crop_pred, size=(box_height, box_width), mode='bilinear',
-                                          align_corners=True) / 64
-                people_count = torch.sum(crop_pred).item()
-                print(f'({i},{j}) count: {people_count}')
-
-            total_people_count += int(people_count)
-
+    print(f"\nDetected people count (Total): {total}")
     print(f"Detected people count (Grid Analysis): {total_people_count}")
 
 if __name__ == "__main__":
