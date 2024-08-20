@@ -1,6 +1,8 @@
 import PyQt6.QtGui
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtCore import QThread, pyqtSignal
+
+import ui.mainwindow
 from ui.camera_stream.camera import Camera
 import os
 import onnxruntime as ort
@@ -15,6 +17,8 @@ curr_dir = os.path.abspath(os.path.dirname(__file__))
 main_dir = os.path.join(curr_dir, '..')
 onnx_path = os.path.join(main_dir, 'onnx', 'model.onnx')
 
+q_counts = np.zeros((4, 4))
+
 class ProcessingThread(QThread):
     people_count_signal = pyqtSignal(int)
 
@@ -23,6 +27,8 @@ class ProcessingThread(QThread):
         self.camera = camera
         self.onnx = onnx
         self.window = window
+
+        self.p_frame = None
 
         if self.onnx:
             self.session = ort.InferenceSession(onnx_path)  # Load the ONNX model
@@ -38,6 +44,7 @@ class ProcessingThread(QThread):
 
         while True:
             frame = self.camera.get_current_frame()
+            f_copy = frame.copy()
 
             if frame is None:
                 print("No frame available to process.")
@@ -84,11 +91,18 @@ class ProcessingThread(QThread):
                     people_count = torch.sum(grid_section).item()
                     print(f'({i},{j}) count: {people_count}')
 
-                    self.window.update_q_count(i, j, people_count) # UI update
-
+                    q_counts[i, j] = people_count
                     total_people_count += people_count
 
             end = time.time()
+
+            if self.camera.grid_label.density_flag and self.p_frame is not None:
+                flow_map = self.calculate_optical_flow(self.p_frame, f_copy)
+                self.camera.draw_flow_map(flow_map)
+
+            self.p_frame = f_copy.copy()
+
+            self.camera.set_q_counts(q_counts)
 
             print(f"\nDetected people count (Total): {total}")
             print(f"Detected people count (Grid Analysis): {total_people_count}")
@@ -98,8 +112,17 @@ class ProcessingThread(QThread):
 
             self.msleep(15)  # Sleep for 15 msec (60+ fps)
 
+    def calculate_optical_flow(self, prev_frame, current_frame):
+        prev_gray = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
+        current_gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
+
+        flow = cv2.calcOpticalFlowFarneback(prev_gray, current_gray, None,  0.5, 3, 16,
+                                            3, 5, 1.2, 0)
+        return flow
+
+
 class Analysis(QWidget):
-    def __init__(self, width, height, links, main_window):
+    def __init__(self, width, height, links, main_window, switch):
         super().__init__()
 
         self.width = width
@@ -107,6 +130,7 @@ class Analysis(QWidget):
 
         self.main_window = main_window
         self.links = links
+        self.switch = switch
 
         self.camera = None
 
@@ -125,9 +149,12 @@ class Analysis(QWidget):
         self.camera = Camera(width, height, link)
         frame_video = self.camera.get_video_frame(analysis=True)
 
+        time.sleep(2)
+
         print('Camera frame taken')
         self.main_window.set_camera_frame(frame_video)
         self.processing_thread.set_camera(self.camera)
+        self.switch.toggled.connect(self.camera.toggle_density_flag)
 
     def update_camera(self, link):
         if self.camera:

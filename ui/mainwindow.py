@@ -3,6 +3,108 @@ from ui.sidebar import Sidebar
 from ui.ui_mainwindow import Ui_MainWindow
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtCore
+from PyQt6.QtCore import QObject, QPropertyAnimation, QEasingCurve, pyqtProperty, pyqtSlot, QSize, QPointF
+from PyQt6.QtGui import QLinearGradient, QGradient, QPainter, QColor, QPalette
+from PyQt6.QtWidgets import QAbstractButton
+from PyQt6.QtCore import Qt, pyqtSignal
+
+class SwitchPrivate(QObject):
+    def __init__(self, q, parent=None):
+        super().__init__(parent=parent)
+        self.mPointer = q
+        self.mPosition = 0.0
+        self.mGradient = QLinearGradient()
+        self.mGradient.setSpread(QGradient.Spread.PadSpread)
+
+        self.animation = QPropertyAnimation(self)
+        self.animation.setTargetObject(self)
+        self.animation.setPropertyName(b'position')
+        self.animation.setStartValue(0.0)
+        self.animation.setEndValue(1.0)
+        self.animation.setDuration(200)
+
+        self.animation.setEasingCurve(QEasingCurve.Type.InOutExpo)
+        self.animation.finished.connect(self.mPointer.update)
+
+    @pyqtProperty(float)
+    def position(self):
+        return self.mPosition
+
+    @position.setter
+    def position(self, value):
+        self.mPosition = value
+        self.mPointer.update()
+
+    def draw(self, painter):
+        r = self.mPointer.rect()
+        margin = int(r.height() / 12)
+
+        # Use QPalette.ColorRole to get colors
+        shadow = self.mPointer.palette().color(QPalette.ColorRole.Dark)
+        light = self.mPointer.palette().color(QPalette.ColorRole.Light)
+        button_on = QColor('#5b5b85')
+        button_off = self.mPointer.palette().color(QPalette.ColorRole.Button)
+
+        painter.setPen(Qt.PenStyle.NoPen)
+
+        self.mGradient.setColorAt(0, shadow.darker(130))
+        self.mGradient.setColorAt(1, light.darker(130))
+        self.mGradient.setStart(0, r.height())
+        self.mGradient.setFinalStop(0, 0)
+        painter.setBrush(self.mGradient)
+        painter.drawRoundedRect(r, r.height() / 2, r.height() / 2)
+
+        self.mGradient.setColorAt(0, shadow.darker(140))
+        self.mGradient.setColorAt(1, light.darker(160))
+        self.mGradient.setStart(0, 0)
+        self.mGradient.setFinalStop(0, r.height())
+        painter.setBrush(self.mGradient)
+        painter.drawRoundedRect(r.adjusted(margin, margin, -margin, -margin), r.height() / 2, r.height() / 2)
+
+        # Change button color depending on the state
+        if self.mPointer.isChecked():
+            button_color = button_on
+        else:
+            button_color = button_off
+
+        self.mGradient.setColorAt(0, button_color.darker(130))
+        self.mGradient.setColorAt(1, button_color)
+
+        painter.setBrush(self.mGradient)
+
+        x = r.height() / 2.0 + self.mPosition * (r.width() - r.height())
+        painter.drawEllipse(QPointF(x, r.height() / 2), r.height() / 2 - margin, r.height() / 2 - margin)
+
+    @pyqtSlot(bool, name='animate')
+    def animate(self, checked):
+        self.animation.setDirection(
+            QPropertyAnimation.Direction.Forward if checked else QPropertyAnimation.Direction.Backward)
+        self.animation.start()
+
+
+class Switch(QAbstractButton):
+    toggled = pyqtSignal(bool)
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.dPtr = SwitchPrivate(self)
+        self.setCheckable(True)
+        self.clicked.connect(self.dPtr.animate)
+        self.clicked.connect(self.emit_toggled_signal)
+
+    def sizeHint(self):
+        return QSize(45, 22)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        self.dPtr.draw(painter)
+
+    def resizeEvent(self, event):
+        self.update()
+
+    def emit_toggled_signal(self, checked):
+        self.toggled.emit(checked)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -29,6 +131,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.get_links()
 
+        self.setStyleSheet("""
+                    QToolTip {
+                        background-color: #313131;
+                        color: #5b5b85;
+                        border: 1px solid #272727;
+                    }
+                """)
+
+        self.switch = Switch()
+        self.switch.setToolTip('Switch between density map and flow map.')
+        self.count_vert_layout.insertWidget(1, self.switch, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
+
         self.setup_sidebar()
         self.setup_analysis()
 
@@ -42,7 +156,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         width = self.label_width - 180
         height = self.label_height - 180
 
-        self.analysis = Analysis(width, height, self.links, self)
+        self.analysis = Analysis(width, height, self.links, self, self.switch)
 
     def set_camera_frame(self, label):
         print("Label size: " + str(label.size()))
@@ -62,58 +176,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.video_label = None
                 print('Camera frame removed')
 
-    def update_q_count(self, i, j, count):
-        if i == 0 and j == 0:
-            print(f'Q1 count: {count}')
-            self.count_q1.setText(f'Q1 count: {int(count)}')
-        elif i == 0 and j == 1:
-            print(f'Q2 count: {count}')
-            self.count_q2.setText(f'Q2 count: {int(count)}')
-        elif i == 0 and j == 2:
-            print(f'Q3 count: {count}')
-            self.count_q3.setText(f'Q3 count: {int(count)}')
-        elif i == 0 and j == 3:
-            print(f'Q4 count: {count}')
-            self.count_q4.setText(f'Q4 count: {int(count)}')
-        elif i == 1 and j == 0:
-            print(f'Q5 count: {count}')
-            self.count_q5.setText(f'Q5 count: {int(count)}')
-        elif i == 1 and j == 1:
-            print(f'Q6 count: {count}')
-            self.count_q6.setText(f'Q6 count: {int(count)}')
-        elif i == 1 and j == 2:
-            print(f'Q7 count: {count}')
-            self.count_q7.setText(f'Q7 count: {int(count)}')
-        elif i == 1 and j == 3:
-            print(f'Q8 count: {count}')
-            self.count_q8.setText(f'Q8 count: {int(count)}')
-        elif i == 2 and j == 0:
-            print(f'Q9 count: {count}')
-            self.count_q9.setText(f'Q9 count: {int(count)}')
-        elif i == 2 and j == 1:
-            print(f'Q10 count: {count}')
-            self.count_q10.setText(f'Q10 count: {int(count)}')
-        elif i == 2 and j == 2:
-            print(f'Q11 count: {count}')
-            self.count_q11.setText(f'Q11 count: {int(count)}')
-        elif i == 2 and j == 3:
-            print(f'Q12 count: {count}')
-            self.count_q12.setText(f'Q12 count: {int(count)}')
-        elif i == 3 and j == 0:
-            print(f'Q13 count: {count}')
-            self.count_q13.setText(f'Q13 count: {int(count)}')
-        elif i == 3 and j == 1:
-            print(f'Q14 count: {count}')
-            self.count_q14.setText(f'Q14 count: {int(count)}')
-        elif i == 3 and j == 2:
-            print(f'Q15 count: {count}')
-            self.count_q15.setText(f'Q15 count: {int(count)}')
-        elif i == 3 and j == 3:
-            print(f'Q16 count: {count}')
-            self.count_q16.setText(f'Q16 count: {int(count)}')
-
     def update_people_count(self, count):
-        self.count_label.setText(f'Count: {count}')
+        self.count_label.setText(f'Total count: {count}')
 
     def get_links(self):
         try:

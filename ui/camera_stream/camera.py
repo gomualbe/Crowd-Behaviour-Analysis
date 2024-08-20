@@ -8,7 +8,7 @@ import time
 import cv2
 import imutils
 from PyQt6.QtGui import QPainter, QPen, QColor
-
+import numpy as np
 
 class GridLabel(QLabel):
     def __init__(self, width, height):
@@ -19,13 +19,37 @@ class GridLabel(QLabel):
         self.height = height
         self.x_offset = 0
         self.y_offset = 0
+        self.q_counts = np.zeros((4, 4))
+        self.density_flag = False
+        self.flow_map = None
 
     def paintEvent(self, event):
         super().paintEvent(event)
-
         painter = QPainter(self)
 
-        pen = QPen(QColor(169, 169, 169, 150)) # Light gray color
+        # Draw the video frame
+        pixmap = self.pixmap()
+        if pixmap:
+            painter.drawPixmap(self.rect(), pixmap)
+
+        if self.density_flag and self.flow_map is not None:
+            self.draw_flow(painter) # Draw the flow map on top of the video frame
+        else:
+            self.draw_grid(painter) # Draw the grid with updated count on top of the video frame
+
+        painter.end()
+
+    def set_q_counts(self, counts):
+        self.q_counts = counts
+        self.update()
+
+    def set_flow_map(self, flow_map):
+        self.flow_map = flow_map
+        self.update()
+
+    def draw_grid(self, painter):
+        # Draw the grid and counts
+        pen = QPen(QColor(169, 169, 169, 150))  # Light gray color
         pen.setWidth(1)
         painter.setPen(pen)
 
@@ -41,14 +65,36 @@ class GridLabel(QLabel):
                              self.x_offset + self.width, self.y_offset + i * row_height)
 
         # Write the grid labels
-        for  i in range(self.grid_rows):
+        for i in range(self.grid_rows):
             for j in range(self.grid_cols):
-                label_text = f"Q{i * self.grid_cols + j + 1}"
-                text_pos = QtCore.QPoint(self.x_offset + j * col_width + 5,
-                                         self.y_offset + (i + 1) * row_height - 5)
+                label_text = f"{int(self.q_counts[i, j])}"
+                text_width = painter.fontMetrics().horizontalAdvance(label_text)
+                text_pos = QtCore.QPoint(self.x_offset + (j + 1) * col_width - text_width - 5,
+                                         self.y_offset + i * row_height + painter.fontMetrics().ascent() + 5)
+
+                painter.setPen(QColor(255, 0, 0, 200))
+                font = painter.font()
+                font.setBold(True)
+                painter.setFont(font)
                 painter.drawText(text_pos, label_text)
 
-        painter.end()
+    def draw_flow(self, painter):
+        pen = QPen(QColor(255, 0, 0, 200))  # Red color for flow lines
+        pen.setWidth(2)
+        painter.setPen(pen)
+
+        step_size = 16  # Adjust the step size according to the flow map resolution
+        for y in range(0, self.flow_map.shape[0], step_size):
+            for x in range(0, self.flow_map.shape[1], step_size):
+                flow_vector = self.flow_map[y, x]
+                start_point = QtCore.QPoint(int(self.x_offset + x), int(self.y_offset + y))
+                end_point = QtCore.QPoint(int(self.x_offset + x + flow_vector[0]),
+                                          int(self.y_offset + y + flow_vector[1]))
+                painter.drawLine(start_point, end_point)
+
+    def toggle_density_flag(self, flag):
+        self.density_flag = flag
+        self.update()
 
 
 class Camera(QWidget):
@@ -60,6 +106,8 @@ class Camera(QWidget):
         self.screen_height = height
         self.maintain_aspect_ratio = aspect_ratio
         self.camera_stream_link = stream_link
+
+        self.flow_label = QLabel(self)
 
         self.grid_label = GridLabel(self.screen_width, self.screen_height)
         self.video_frame = QLabel(self)
@@ -161,6 +209,17 @@ class Camera(QWidget):
             self.grid_label.setPixmap(self.video_frame.pixmap())  # Set the video frame pixmap
             self.grid_label.update()  # Redraw the grid on top of the video frame
 
+    def set_q_counts(self, counts):
+        self.grid_label.set_q_counts(counts)
+
+    def toggle_density_flag(self, flag):
+        self.grid_label.toggle_density_flag(flag)
+        print('Density flag:', flag)
+
+    def draw_flow_map(self, flow_map):
+        self.grid_label.set_flow_map(flow_map)
+        self.grid_label.update()
+
     def delete_stream(self):
         print('Stopping camera: {}'.format(self.camera_stream_link))
         self.stop_event.set()  # Signal the thread to stop
@@ -181,7 +240,7 @@ class Camera(QWidget):
         if not analysis:
             return self.video_frame
 
-        return self.grid_label  # Return the grid label, which now overlays the video stream
+        return self.grid_label
 
     def get_link(self):
         return self.camera_stream_link
