@@ -2,7 +2,7 @@ import PyQt6.QtGui
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtCore import QThread, pyqtSignal
 
-import ui.mainwindow
+from ui.mainwindow import MainWindow
 from ui.camera_stream.camera import Camera
 import os
 import onnxruntime as ort
@@ -17,8 +17,7 @@ curr_dir = os.path.abspath(os.path.dirname(__file__))
 main_dir = os.path.join(curr_dir, '..')
 onnx_path = os.path.join(main_dir, 'onnx', 'model.onnx')
 
-q_counts = np.zeros((4, 4))
-
+q_counts = np.zeros((4, 4)) # 4x4 grid to store people count for each box
 
 class ProcessingThread(QThread):
     people_count_signal = pyqtSignal(int)
@@ -106,7 +105,6 @@ class ProcessingThread(QThread):
 
                 self.msleep(15)  # Sleep for 15 msec (60+ fps)
 
-
 class FlowThread(QThread):
     def __init__(self, camera):
         super().__init__()
@@ -145,8 +143,15 @@ class FlowThread(QThread):
         prev_gray = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
         current_gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
 
-        flow = cv2.calcOpticalFlowFarneback(prev_gray, current_gray, None,
-                                            0.5, 3, 15, 3, 5, 1.2, 0)
+        flow = cv2.calcOpticalFlowFarneback(prev_gray,
+                                            current_gray,
+                                            None,
+                                            0.5,
+                                            3,
+                                            15,
+                                            3, 5,
+                                            1.2,
+                                            0)
         return flow
 
 
