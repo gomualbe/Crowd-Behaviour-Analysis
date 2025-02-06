@@ -36,6 +36,7 @@ def test_model():
     model = load_model()
     model.eval()
 
+    app = QApplication([])
     frame = QPixmap(os.path.join(main_dir, 'images', 'IMG_5.jpg')) # Load a sample frame (insert your own path)
     frame = frame.toImage()  # Convert QPixmap to QImage
     frame = qimage_to_numpy(frame)  # Convert QImage to NumPy array
@@ -72,16 +73,16 @@ def test_model():
 
     print(f"\nDetected people count (Total): {total}")
     print(f"Detected people count (Grid Analysis): {total_people_count}")
+    print(f"\nDetection difference: {total - total_people_count}")
 
 if __name__ == "__main__":
     # call("pyuic6 ui/mainwindow.ui -o ui/ui_mainwindow.py", shell=True)
 
-    app = QApplication([])
+    # app = QApplication([])
 
-    # test_model()
+    test_model()
 
-    window = MainWindow(MW_WIDTH, MW_HEIGHT, LB_WIDTH, LB_HEIGHT)
-
-    sleep(3)
-    window.show()
-    sys.exit(app.exec())
+    # window = MainWindow(MW_WIDTH, MW_HEIGHT, LB_WIDTH, LB_HEIGHT)
+    # sleep(3)
+    # window.show()
+    # sys.exit(app.exec())

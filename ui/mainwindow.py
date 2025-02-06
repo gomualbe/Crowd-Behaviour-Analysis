@@ -37,7 +37,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 """)
 
         self.switch = Switch()
-        self.switch.setToolTip('Switch between density map and flow map.')
+        self.switch.setToolTip('Switch between density map (counting) and flow map.')
         self.count_vert_layout.insertWidget(1, self.switch, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
 
         self.setup_sidebar()

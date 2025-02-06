@@ -2,7 +2,7 @@ import PyQt6.QtGui
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtCore import QThread, pyqtSignal
 
-from ui.mainwindow import MainWindow
+# from ui.mainwindow import MainWindow
 from ui.camera_stream.camera import Camera
 import os
 import onnxruntime as ort
