@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
+    <width>1460</width>
     <height>708</height>
    </rect>
   </property>
@@ -18,13 +18,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1280</width>
+    <width>1460</width>
     <height>708</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1280</width>
+    <width>1460</width>
     <height>708</height>
    </size>
   </property>
@@ -43,13 +43,13 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>1280</width>
+     <width>1460</width>
      <height>708</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>1280</width>
+     <width>1460</width>
      <height>708</height>
     </size>
    </property>
@@ -221,7 +221,7 @@ QPushButton:checked{
       </layout>
      </widget>
     </item>
-    <item row="0" column="1" colspan="2" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+    <item row="0" column="1">
      <widget class="QWidget" name="main_view" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
@@ -231,33 +231,31 @@ QPushButton:checked{
       </property>
       <property name="minimumSize">
        <size>
-        <width>1056</width>
+        <width>1236</width>
         <height>708</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>1056</width>
+        <width>1236</width>
         <height>708</height>
        </size>
       </property>
       <property name="styleSheet">
        <string notr="true">QWidget{
 	background-color: rgb(49, 49, 49);
-	width: 1056;
-	height: 708;
 }</string>
       </property>
-      <widget class="QWidget" name="verticalLayoutWidget">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1224</width>
-         <height>721</height>
+         <width>1264</width>
+         <height>711</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="main_vert_layout">
+       <layout class="QHBoxLayout" name="main_hor_layout">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -265,32 +263,43 @@ QPushButton:checked{
          <enum>QLayout::SetFixedSize</enum>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="main_hor_layout">
+         <layout class="QVBoxLayout" name="main_vert_layout" stretch="0">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <property name="sizeConstraint">
            <enum>QLayout::SetFixedSize</enum>
           </property>
           <item>
-           <widget class="QLabel" name="camera_label">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <layout class="QHBoxLayout" name="labels_hor_layout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>528</width>
-              <height>70</height>
-             </size>
+            <property name="bottomMargin">
+             <number>10</number>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>528</width>
-              <height>70</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLabel{
+            <item>
+             <widget class="QLabel" name="camera_label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>528</width>
+                <height>70</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>528</width>
+                <height>70</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
 	qproperty-alignment: AlignLeft;
 	margin-left: 30;
 	padding-top: 55;
@@ -299,40 +308,40 @@ QPushButton:checked{
 	color: rgb(91, 91, 133);
 }
 </string>
-            </property>
-            <property name="text">
-             <string>Camera No.: 1</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading</set>
-            </property>
-            <property name="margin">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="count_label">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>528</width>
-              <height>70</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>528</width>
-              <height>70</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLabel{
+              </property>
+              <property name="text">
+               <string>Camera No.: 1</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading</set>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="count_label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>528</width>
+                <height>70</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>528</width>
+                <height>70</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
 	qproperty-alignment: AlignRight;
 	margin-right: 40;
 	padding-top: 55;
@@ -340,17 +349,362 @@ QPushButton:checked{
 	font-weight: bold;
 	color: rgb(91, 91, 133);
 }</string>
+              </property>
+              <property name="text">
+               <string>Count: 0</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight</set>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="count_vert_layout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetFixedSize</enum>
+          </property>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q1">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-top: 50;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+}
+</string>
             </property>
             <property name="text">
-             <string>Count: 0</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight</set>
-            </property>
-            <property name="margin">
-             <number>0</number>
+             <string>Q1 count: 0</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q2">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q2 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q3">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q3 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q4">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q4 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q5">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q5 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q6">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q6 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q7">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q7 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q8">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q8 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q9">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q9 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q10">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q10 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q11">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q11 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q12">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q12 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q13">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q13 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q14">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q14 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q15">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q15 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="count_q16">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	qproperty-alignment: AlignLeft;
+	margin-left: 30;
+	color: rgb(91, 91, 133);
+	margin-top: 15;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Q16 count: 0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>

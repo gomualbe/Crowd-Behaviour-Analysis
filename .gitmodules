@@ -1,0 +1,3 @@
+[submodule "models/clip_ebc"]
+	path = models/clip_ebc
+	url = https://github.com/Yiming-M/CLIP-EBC
