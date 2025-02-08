@@ -2,12 +2,11 @@
 import PyQt6.QtCore
 import PyQt6.QtWidgets
 from PyQt6 import QtCore, QtGui
-from PyQt6.QtWidgets import QLabel, QWidget
+from PyQt6.QtWidgets import QLabel, QWidget, QApplication
 from threading import Thread, Event
 from collections import deque
 import time
 import cv2
-import imutils
 from PyQt6.QtGui import QPainter, QPen, QColor
 import numpy as np
 
@@ -26,6 +25,16 @@ class CustomLabel(QLabel):
         self.q_counts = np.zeros((4, 4))
         self.density_flag = False
         self.flow_map = None
+
+        self.setFixedSize(self.width, self.height) # Set the size of the label
+
+    def set_pixmap(self, pixmap):
+        if pixmap:
+            scaled_pixmap = pixmap.scaled(self.width, self.height,
+                                          PyQt6.QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                                          PyQt6.QtCore.Qt.TransformationMode.SmoothTransformation)
+            super().setPixmap(scaled_pixmap)
+            self.update()
 
     def paintEvent(self, event):
         super().paintEvent(event)
@@ -140,27 +149,31 @@ class CustomLabel(QLabel):
         self.density_flag = flag
         self.update()
 
-
 class Camera(QWidget):
-    def __init__(self, width, height, stream_link=0, aspect_ratio=True, parent=None, deque_size=1):
+    def __init__(self, stream_link=0, parent=None, deque_size=1):
         super(Camera, self).__init__(parent)
         self.deque = deque(maxlen=deque_size)
-        self.screen_width = width
-        self.screen_height = height
-        self.maintain_aspect_ratio = aspect_ratio
         self.camera_stream_link = stream_link
         self.density_flag = False
 
-        self.custom_label = CustomLabel(self.screen_width, self.screen_height)
-        self.video_frame = QLabel(self)
-        self.stop_event = Event()
+        # Define separate sizes:
+        self.sidebar_width = 195
+        self.sidebar_height = int(self.sidebar_width * 9 / 16)  # e.g., ~110 pixels tall
+        self.analysis_width = 1056  # A larger width for analysis
+        self.analysis_height = int(self.analysis_width * 9 / 16)  # should be 594
 
+        # The sidebar uses video_frame (small) and analysis uses custom_label (big)
+        self.video_frame = QLabel(self)
+        self.video_frame.setFixedSize(self.sidebar_width, self.sidebar_height)
+        self.custom_label = CustomLabel(self.analysis_width, self.analysis_height)
+
+        self.stop_event = Event()
         self.online = False
         self.capture = None
 
         self.load_network_stream()
 
-        self.get_frame_thread = Thread(target=self.get_frame, args=())
+        self.get_frame_thread = Thread(target=self.get_frame)
         self.get_frame_thread.daemon = True
         self.get_frame_thread.start()
 
@@ -170,6 +183,30 @@ class Camera(QWidget):
 
         print('Started camera: {}'.format(self.camera_stream_link))
 
+    def set_pixmap(self):
+        if hasattr(self, 'frame') and self.frame is not None:
+            # Convert the captured frame (in its full resolution) to RGB
+            frame_rgb = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+            h, w, ch = frame_rgb.shape
+            bytesPerLine = ch * w
+            qimg = QtGui.QImage(frame_rgb.data, w, h, bytesPerLine,
+                                QtGui.QImage.Format.Format_RGB888)
+            full_pixmap = QtGui.QPixmap.fromImage(qimg)
+
+            # For the sidebar, scale to sidebar size with smooth transformation:
+            sidebar_pixmap = full_pixmap.scaled(
+                self.sidebar_width, self.sidebar_height,
+                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                QtCore.Qt.TransformationMode.SmoothTransformation)
+            self.video_frame.setPixmap(sidebar_pixmap)
+
+            # For the analysis view, scale to analysis size with smooth transformation:
+            analysis_pixmap = full_pixmap.scaled(
+                self.analysis_width, self.analysis_height,
+                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                QtCore.Qt.TransformationMode.SmoothTransformation)
+            self.custom_label.set_pixmap(analysis_pixmap)
+
     def load_network_stream(self):
         def load_network_stream_thread():
             if self.verify_network_stream(self.camera_stream_link):
@@ -177,7 +214,7 @@ class Camera(QWidget):
                 self.capture = cv2.VideoCapture(self.camera_stream_link)
                 self.online = True
 
-        self.load_stream_thread = Thread(target=load_network_stream_thread, args=())
+        self.load_stream_thread = Thread(target=load_network_stream_thread)
         self.load_stream_thread.daemon = True
         self.load_stream_thread.start()
 
@@ -192,8 +229,8 @@ class Camera(QWidget):
         while not self.stop_event.is_set():
             try:
                 if self.capture and self.capture.isOpened() and self.online:
-                    self.status, frame = self.capture.read()
-                    if self.status:
+                    ret, frame = self.capture.read()
+                    if ret:
                         self.deque.append(frame)
                     else:
                         self.capture.release()
@@ -202,37 +239,14 @@ class Camera(QWidget):
                     print('Attempting to reconnect', self.camera_stream_link)
                     self.load_network_stream()
                     self.spin(2)
-                self.spin(.001)
+                self.spin(0.001)
             except AttributeError:
                 pass
 
     def spin(self, seconds):
         time_end = time.time() + seconds
         while time.time() < time_end:
-            PyQt6.QtWidgets.QApplication.processEvents()
-
-    def set_pixmap(self):
-        if hasattr(self, 'frame'):
-            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-            h, w, ch = self.frame.shape
-            bytesPerLine = ch * w
-            convertToQtFormat = QtGui.QImage(self.frame.data, w, h, bytesPerLine, QtGui.QImage.Format.Format_RGB888)
-            p = convertToQtFormat.scaled(self.screen_width, self.screen_height,
-                                         PyQt6.QtCore.Qt.AspectRatioMode.KeepAspectRatio)
-            self.video_frame.setPixmap(QtGui.QPixmap.fromImage(p))
-
-            video_width = p.width()
-            video_height = p.height()
-
-            x_offset = (self.screen_width - video_width) // 2
-            y_offset = (self.screen_height - video_height) // 2
-
-            self.custom_label.width = video_width
-            self.custom_label.height = video_height
-            self.custom_label.x_offset = x_offset
-            self.custom_label.y_offset = y_offset
-
-            self.custom_label.update()
+            QApplication.processEvents()
 
     def set_frame(self):
         if not self.online:
@@ -240,16 +254,8 @@ class Camera(QWidget):
             return
 
         if self.deque and self.online:
-            frame = self.deque[-1]
-
-            if self.maintain_aspect_ratio:
-                self.frame = imutils.resize(frame, width=self.screen_width)
-            else:
-                self.frame = cv2.resize(frame, (self.screen_width, self.screen_height))
-
+            self.frame = self.deque[-1]
             self.set_pixmap()
-            self.custom_label.setPixmap(self.video_frame.pixmap())  # Set the video frame pixmap
-            self.custom_label.update()  # Redraw the grid on top of the video frame
 
     def set_q_counts(self, counts):
         self.custom_label.set_q_counts(counts)
@@ -263,34 +269,10 @@ class Camera(QWidget):
         self.custom_label.set_flow_map(flow_map, frame)
         self.custom_label.update()
 
-    def delete_stream(self):
-        print('Stopping camera: {}'.format(self.camera_stream_link))
-        self.stop_event.set()  # Signal the thread to stop
-        self.get_frame_thread.join()  # Wait for the thread to finish
-
-        if self.capture and self.capture.isOpened():
-            print('Releasing camera: {}'.format(self.camera_stream_link))
-            self.capture.release()
-
-        if self.video_frame:
-            self.video_frame.clear()
-            self.video_frame.deleteLater()
-
-        self.online = False
-        print('Camera stopped safely.')
-
     def get_video_frame(self, analysis=False):
-        if not analysis:
-            return self.video_frame
-
-        return self.custom_label
-
-    def get_link(self):
-        return self.camera_stream_link
+        return self.custom_label if analysis else self.video_frame
 
     def get_current_frame(self):
         if self.deque and self.online:
-            frame = self.deque[-1].copy()  # Get the latest frame
-            return frame  # Return the actual frame if available
-
-        return None  # Return None if there's no frame available
+            return self.deque[-1].copy()  # Return the latest frame copy
+        return None
