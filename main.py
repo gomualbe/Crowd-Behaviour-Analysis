@@ -13,13 +13,10 @@ import cv2
 from PyQt6.QtGui import QPixmap, QImage
 import numpy as np
 
-MW_WIDTH = 1460
+MW_WIDTH = 1326
 MW_HEIGHT = 708
 LB_WIDTH = 1236
 LB_HEIGHT = 594
-
-# http://admin:admin@192.168.1.6:8081/video
-# http://192.168.1.7:8080/video
 
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -78,11 +75,11 @@ def test_model():
 if __name__ == "__main__":
     # call("pyuic6 ui/mainwindow.ui -o ui/ui_mainwindow.py", shell=True)
 
-    # app = QApplication([])
+    app = QApplication([])
 
-    test_model()
+    # test_model()
 
-    # window = MainWindow(MW_WIDTH, MW_HEIGHT, LB_WIDTH, LB_HEIGHT)
-    # sleep(3)
-    # window.show()
-    # sys.exit(app.exec())
+    window = MainWindow(MW_WIDTH, MW_HEIGHT, LB_WIDTH, LB_HEIGHT)
+    sleep(1)
+    window.show()
+    sys.exit(app.exec())

@@ -1,9 +1,5 @@
-import PyQt6.QtGui
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtCore import QThread, pyqtSignal
-
-# from ui.mainwindow import MainWindow
-from ui.camera_stream.camera import Camera
 import os
 import onnxruntime as ort
 import cv2
@@ -154,18 +150,13 @@ class FlowThread(QThread):
                                             0)
         return flow
 
-
 class Analysis(QWidget):
-    def __init__(self, width, height, links, main_window, switch):
+    def __init__(self, width, height, main_window, switch):
         super().__init__()
-
         self.width = width
         self.height = height
-
         self.main_window = main_window
-        self.links = links
         self.switch = switch
-
         self.camera = None
 
         # Separate thread for frame processing
@@ -175,21 +166,14 @@ class Analysis(QWidget):
         # Separate thread for optical flow
         self.flow_thread = FlowThread(self.camera)
 
-        self.setup_camera(self.links[0])
-
         self.processing_thread.start() # Start the thread
         self.flow_thread.start() # Start the thread
 
-    def setup_camera(self, link):
-        width = self.width - 40
-        height = int(width * 9 / 16)
+    def setup_camera(self, camera_instance):
+        print('Using existing camera instance...')
+        self.camera = camera_instance  # Reuse the existing camera instance
 
-        self.camera = Camera(width, height, link)
         frame_video = self.camera.get_video_frame(analysis=True)
-
-        time.sleep(2)
-
-        print('Camera frame taken')
         self.main_window.set_camera_frame(frame_video)
 
         self.processing_thread.set_camera(self.camera)
@@ -197,11 +181,7 @@ class Analysis(QWidget):
 
         self.switch.toggled.connect(self.camera.toggle_density_flag)
 
-    def update_camera(self, link):
-        if self.camera:
-            print('Deleting stream...')
-            self.camera.delete_stream()
-
+    def update_camera(self, camera_instance):
         print('Updating camera...')
         self.main_window.remove_camera_frame()
-        self.setup_camera(link)
+        self.setup_camera(camera_instance)

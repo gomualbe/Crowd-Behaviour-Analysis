@@ -28,6 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.get_links()
 
+        # Set the tooltip style
         self.setStyleSheet("""
                     QToolTip {
                         background-color: #313131;
@@ -38,10 +39,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.switch = Switch()
         self.switch.setToolTip('Switch between density map (counting) and flow map.')
-        self.count_vert_layout.insertWidget(1, self.switch, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
+        self.labels_hor_layout.insertWidget(1, self.switch, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
 
         self.setup_sidebar()
-        self.setup_analysis()
 
     def setup_sidebar(self):
         width = self.window_width - self.label_width
@@ -53,7 +53,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         width = self.label_width - 180
         height = self.label_height - 180
 
-        self.analysis = Analysis(width, height, self.links, self, self.switch)
+        self.analysis = Analysis(width, height, self, self.switch)
 
     def set_camera_frame(self, label):
         print("Label size: " + str(label.size()))
@@ -61,8 +61,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.main_vert_layout.addWidget(label, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
         print('Camera frame added')
 
-    def change_camera(self, link):
-        self.analysis.update_camera(link)
+    def change_camera(self, camera_widget):
+        self.analysis.update_camera(camera_widget)
 
     def remove_camera_frame(self):
         if self.video_label:

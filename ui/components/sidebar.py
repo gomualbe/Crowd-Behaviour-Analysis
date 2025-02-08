@@ -47,22 +47,19 @@ class Sidebar(QWidget):
         self.scroll_area.setWidgetResizable(True)
 
         self.cameras[0].video_frame.setStyleSheet("border: 2px solid rgb(91,91,133);")
-        
+        self.init_analysis()
+
     def set_stream_widgets(self):
         """Set widgets dimensions based on number of cameras and append every camera to an array of camera widgets"""
         print('Creating camera widgets...')
         for i in range(self.n_links):
-            frame_width = self.width - 40
-            frame_height = int(frame_width * 9 / 16)
-
-            camera_widget = CameraWidget(int(frame_width), int(frame_height), self.links[i])
+            camera_widget = CameraWidget(stream_link=self.links[i])
             camera_widget.video_frame.mousePressEvent = lambda event, index=i: self.camera_clicked(index)
-            # camera_widget.video_frame.mousePressEvent = lambda event, index=i: self.camera_clicked_2(index)
             camera_widget.video_frame.setStyleSheet(f'qproperty-alignment: {int(PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)};')
             self.cameras.append(camera_widget)
 
     def camera_clicked(self, index):
-        print(f'Camera no. {index+1} clicked...')
+        print(f'Camera no. {index + 1} clicked...')
 
         for i in range(self.n_links):
             if i != index:
@@ -70,17 +67,9 @@ class Sidebar(QWidget):
             else:
                 self.cameras[index].video_frame.setStyleSheet("border: 2px solid rgb(91,91,133);")
 
-        self.main_window.camera_label.setText(f'Camera No.: {index+1}')
-        self.main_window.change_camera(self.links[index])
+        self.main_window.camera_label.setText(f'Camera No.: {index + 1}')
+        self.main_window.change_camera(self.cameras[index])  # Passes now the CameraWidget instance
 
-    # def camera_clicked_2(self, index):
-    #     print(f'Camera no. {index+1} clicked...')
-    #
-    #     for i in range(self.n_links):
-    #         if i != index:
-    #             self.cameras[i].video_frame.setStyleSheet("border: 2px solid rgb(39,39,39);")
-    #         else:
-    #             self.cameras[index].video_frame.setStyleSheet("border: 2px solid rgb(91,91,133);")
-    #
-    #     self.main_window.camera_label.setText(f'Camera No.: {index+1}')
-    #     self.main_window.switch_camera(self.cameras[index].video_frame, index)
+    def init_analysis(self):
+        self.main_window.setup_analysis()
+        self.main_window.analysis.setup_camera(self.cameras[0])
