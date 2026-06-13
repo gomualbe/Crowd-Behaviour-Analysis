@@ -1,9 +1,10 @@
 from ui.components.analysis import Analysis
 from ui.components.sidebar import Sidebar
 from ui.ui_mainwindow import Ui_MainWindow
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QApplication
 from PyQt6 import QtCore
 from ui.components.flowmap_switch import Switch
+from time import sleep
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, window_width, window_height, label_width, label_height):
@@ -55,26 +56,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.analysis = Analysis(width, height, self, self.switch)
 
-    def set_camera_frame(self, label):
-        print("Label size: " + str(label.size()))
-        self.video_label = label
-        self.main_vert_layout.addWidget(label, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
-        print('Camera frame added')
-
-    def change_camera(self, camera_widget):
-        self.analysis.update_camera(camera_widget)
+    def change_camera(self, camera):
+        print(f"[DEBUG] Changing to camera instance: {camera}")
+        self.remove_camera_frame()
+        self.analysis.setup_camera(camera)
+        print(f"[DEBUG] Camera changed to: {camera}")
 
     def remove_camera_frame(self):
         if self.video_label:
-            item = self.main_vert_layout.itemAt(self.main_vert_layout.count() - 1)
-
-            if item:
-                self.main_vert_layout.removeItem(item)
-                self.video_label = None
-                print('Camera frame removed')
+            # removeItem alone leaves the old label parented and visible, so it
+            # would overlap the new one. Detach it from the layout and hide it
+            # (the widget itself belongs to its Camera and must not be deleted).
+            self.main_vert_layout.removeWidget(self.video_label)
+            self.video_label.setParent(None)
+            self.video_label = None
+            print('Camera frame removed')
 
     def update_people_count(self, count):
         self.count_label.setText(f'Total count: {count}')
+
+    def set_camera_frame(self, label):
+        self.video_label = label
+        self.main_vert_layout.addWidget(label, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
+        print("[DEBUG] Camera frame added and UI updated")
 
     def get_links(self):
         try:
