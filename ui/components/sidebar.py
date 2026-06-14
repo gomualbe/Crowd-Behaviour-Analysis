@@ -49,15 +49,6 @@ class Sidebar(QWidget):
         self.cameras[0].video_frame.setStyleSheet("border: 2px solid rgb(91,91,133);")
         self.init_analysis()
 
-    def set_stream_widgets(self):
-        """Set widgets dimensions based on number of cameras and append every camera to an array of camera widgets"""
-        print('Creating camera widgets...')
-        for i in range(self.n_links):
-            camera_widget = CameraWidget(stream_link=self.links[i])
-            camera_widget.video_frame.mousePressEvent = lambda event, index=i: self.camera_clicked(index)
-            camera_widget.video_frame.setStyleSheet(f'qproperty-alignment: {int(PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)};')
-            self.cameras.append(camera_widget)
-
     def camera_clicked(self, index):
         print(f'Camera no. {index + 1} clicked...')
 
@@ -68,8 +59,18 @@ class Sidebar(QWidget):
                 self.cameras[index].video_frame.setStyleSheet("border: 2px solid rgb(91,91,133);")
 
         self.main_window.camera_label.setText(f'Camera No.: {index + 1}')
-        self.main_window.change_camera(self.cameras[index])  # Passes now the CameraWidget instance
+        temp_camera = self.cameras[index].get_camera()
+        self.main_window.change_camera(temp_camera)  # Passes the Camera instance
 
     def init_analysis(self):
         self.main_window.setup_analysis()
         self.main_window.analysis.setup_camera(self.cameras[0])
+
+    def set_stream_widgets(self):
+        print('Creating camera widgets...')
+        for i in range(self.n_links):
+            camera_widget = CameraWidget(stream_link=self.links[i])
+            camera_widget.video_frame.mousePressEvent = lambda event, idx=i: self.camera_clicked(idx)
+            camera_widget.video_frame.setStyleSheet(
+                f'qproperty-alignment: {int(PyQt6.QtCore.Qt.AlignmentFlag.AlignCenter)};')
+            self.cameras.append(camera_widget)

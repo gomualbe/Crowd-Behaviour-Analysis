@@ -2,7 +2,7 @@
 import PyQt6.QtCore
 import PyQt6.QtWidgets
 from PyQt6 import QtCore, QtGui
-from PyQt6.QtWidgets import QLabel, QWidget, QApplication
+from PyQt6.QtWidgets import QLabel, QWidget
 from threading import Thread, Event
 from collections import deque
 import time
@@ -179,9 +179,37 @@ class Camera(QWidget):
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.set_frame)
-        self.timer.start(1)
+        self.timer.start(30)  # ~33 fps; 1 ms saturated the GUI thread
 
         print('Started camera: {}'.format(self.camera_stream_link))
+
+    def load_network_stream(self):
+        def load_network_stream_thread():
+            if self.verify_network_stream(self.camera_stream_link):
+                print('Stream link opened')
+                self.capture = cv2.VideoCapture(self.camera_stream_link)
+                # Keep only the most recent frame to minimise latency
+                self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+                self.online = True
+
+        self.load_stream_thread = Thread(target=load_network_stream_thread)
+        self.load_stream_thread.daemon = True
+        self.load_stream_thread.start()
+
+    def draw_flow_map(self, flow_map, frame):
+        self.custom_label.set_flow_map(flow_map, frame)
+        self.custom_label.update()
+
+    def verify_network_stream(self, link):
+        cap = cv2.VideoCapture(link)
+        if not cap.isOpened():
+            return False
+        cap.release()
+        return True
+
+    def toggle_density_flag(self, flag):
+        self.density_flag = flag
+        self.custom_label.toggle_density_flag(flag)
 
     def set_pixmap(self):
         if hasattr(self, 'frame') and self.frame is not None:
@@ -200,32 +228,39 @@ class Camera(QWidget):
                 QtCore.Qt.TransformationMode.SmoothTransformation)
             self.video_frame.setPixmap(sidebar_pixmap)
 
-            # For the analysis view, scale to analysis size with smooth transformation:
-            analysis_pixmap = full_pixmap.scaled(
-                self.analysis_width, self.analysis_height,
-                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
-                QtCore.Qt.TransformationMode.SmoothTransformation)
-            self.custom_label.set_pixmap(analysis_pixmap)
+            # Only the camera currently shown in the analysis view needs the
+            # expensive full-size scaling; skip it for the others.
+            if self.custom_label.isVisible():
+                analysis_pixmap = full_pixmap.scaled(
+                    self.analysis_width, self.analysis_height,
+                    QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                    QtCore.Qt.TransformationMode.SmoothTransformation)
+                self.custom_label.set_pixmap(analysis_pixmap)
 
-    def load_network_stream(self):
-        def load_network_stream_thread():
-            if self.verify_network_stream(self.camera_stream_link):
-                print('Stream link opened')
-                self.capture = cv2.VideoCapture(self.camera_stream_link)
-                self.online = True
+    def set_frame(self):
+        # Runs on the GUI thread via QTimer; never block here. If the camera is
+        # offline just skip this tick - the timer fires again shortly and the
+        # background thread handles reconnection.
+        if self.online and self.deque:
+            self.frame = self.deque[-1]
+            self.set_pixmap()
 
-        self.load_stream_thread = Thread(target=load_network_stream_thread)
-        self.load_stream_thread.daemon = True
-        self.load_stream_thread.start()
+    def set_q_counts(self, counts):
+        self.custom_label.set_q_counts(counts)
 
-    def verify_network_stream(self, link):
-        cap = cv2.VideoCapture(link)
-        if not cap.isOpened():
-            return False
-        cap.release()
-        return True
+    def get_camera(self):
+        return self
+
+    def get_video_frame(self, analysis=False):
+        return self.custom_label if analysis else self.video_frame
+
+    def get_current_frame(self):
+        if self.deque and self.online:
+            return self.deque[-1].copy()  # Return the latest frame copy
+        return None
 
     def get_frame(self):
+        # Runs on a background thread: use time.sleep, never processEvents.
         while not self.stop_event.is_set():
             try:
                 if self.capture and self.capture.isOpened() and self.online:
@@ -238,41 +273,7 @@ class Camera(QWidget):
                 else:
                     print('Attempting to reconnect', self.camera_stream_link)
                     self.load_network_stream()
-                    self.spin(2)
-                self.spin(0.001)
+                    time.sleep(2)
+                time.sleep(0.005)
             except AttributeError:
                 pass
-
-    def spin(self, seconds):
-        time_end = time.time() + seconds
-        while time.time() < time_end:
-            QApplication.processEvents()
-
-    def set_frame(self):
-        if not self.online:
-            self.spin(1)
-            return
-
-        if self.deque and self.online:
-            self.frame = self.deque[-1]
-            self.set_pixmap()
-
-    def set_q_counts(self, counts):
-        self.custom_label.set_q_counts(counts)
-
-    def toggle_density_flag(self, flag):
-        self.density_flag = flag
-        self.custom_label.toggle_density_flag(flag)
-        print('Density flag:', flag)
-
-    def draw_flow_map(self, flow_map, frame):
-        self.custom_label.set_flow_map(flow_map, frame)
-        self.custom_label.update()
-
-    def get_video_frame(self, analysis=False):
-        return self.custom_label if analysis else self.video_frame
-
-    def get_current_frame(self):
-        if self.deque and self.online:
-            return self.deque[-1].copy()  # Return the latest frame copy
-        return None

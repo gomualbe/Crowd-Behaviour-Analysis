@@ -22,3 +22,7 @@ class CameraWidget(Camera):
             self.clicked.emit()
 
         self.pressPos = None
+
+    def get_camera(self):
+        camera_instance = super().get_camera()
+        return camera_instance

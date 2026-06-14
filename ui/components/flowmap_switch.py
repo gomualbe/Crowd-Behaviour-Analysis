@@ -98,5 +98,6 @@ class Switch(QAbstractButton):
     def resizeEvent(self, event):
         self.update()
 
-    def emit_toggled_signal(self, checked):
-        self.toggled.emit(checked)
+    def emit_toggled_signal(self):
+        # Emit the actual state; inverting it made the switch behave backwards.
+        self.toggled.emit(self.isChecked())
